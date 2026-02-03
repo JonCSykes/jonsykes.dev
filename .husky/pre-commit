@@ -1,0 +1,26 @@
+pnpm run format
+pnpm run lint
+pnpm run build
+
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+RED=$(tput setaf 1)
+RESET=$(tput sgr0)
+notAllowedBranchMessage="❌ ${RED}You can't commit to '$branch' branch!${RESET}"
+
+GREEN=$(tput setaf 2)
+successfullyMessage="${GREEN}You've successfully committed${RESET} 🚀!"
+
+case "$branch" in
+  production)
+    echo "$notAllowedBranchMessage"
+    exit 1
+    ;;
+  development)
+    echo "$notAllowedBranchMessage"
+    exit 1
+    ;;
+esac
+
+echo "${GREEN}$successfullyMessage${RESET}"

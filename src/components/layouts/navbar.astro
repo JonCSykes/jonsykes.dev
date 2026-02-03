@@ -1,0 +1,55 @@
+---
+import Logo from "./logo.astro";
+---
+
+<nav class="flex h-24 items-center justify-between gap-8">
+  <a href="/" class="flex items-center">
+    <Logo background="black" className="h-[3.0rem] w-auto" />
+  </a>
+
+  <div class="flex gap-8 overflow-auto p-4">
+    <a
+      href="/"
+      class="navbar-link flex items-center justify-center gap-2 text-sm text-nowrap transition-all lg:text-base"
+    >
+      home
+    </a>
+    <a
+      href="/projects"
+      class="navbar-link flex items-center justify-center gap-2 text-sm text-nowrap transition-all lg:text-base"
+    >
+      projects
+    </a>
+    <a
+      href="/blog"
+      class="navbar-link flex items-center justify-center gap-2 text-sm text-nowrap transition-all lg:text-base"
+    >
+      blog
+    </a>
+  </div>
+</nav>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const activeLinkClasses =
+      "relative text-accent after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+14px)] after:w-[calc(100%+32px)] after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-md after:bg-slate-900 after:content-['']";
+    const nonActiveLinkClasses =
+      "text-foreground hover:text-accent transition-colors";
+
+    const currentPathname = window.location.pathname;
+    const navbarLinks = document.querySelectorAll(".navbar-link ");
+
+    navbarLinks.forEach(link => {
+      const linkHref = link.getAttribute("href") || "/";
+
+      const isCurrentLinkActive =
+        linkHref === "/"
+          ? currentPathname === "/"
+          : currentPathname === linkHref ||
+            currentPathname.startsWith(`${linkHref}/`);
+
+      link.className = isCurrentLinkActive
+        ? `${link.className} ${activeLinkClasses}`
+        : `${link.className} ${nonActiveLinkClasses}`;
+    });
+  });
+</script>

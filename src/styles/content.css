@@ -1,0 +1,238 @@
+@reference "./globals.css";
+
+.content {
+  img {
+    @apply rounded-md;
+  }
+
+  .astro-code,
+  .hljs {
+    @apply bg-code/50!;
+  }
+
+  pre {
+    @apply bg-code/50! rounded-md p-4;
+
+    ul + & {
+      @apply mt-8;
+    }
+
+    & + ul {
+      @apply mt-8;
+    }
+
+    pre + & {
+      @apply mt-8;
+    }
+
+    p + & {
+      @apply mt-8;
+    }
+
+    code.language-jsx {
+      .hljs-string,
+      .hljs-template-variable {
+        @apply text-emerald-400;
+      }
+
+      /* Keywords */
+      .hljs-keyword,
+      .hljs-selector-tag {
+        @apply text-red-400;
+      }
+
+      /* Comments */
+      .hljs-comment {
+        @apply text-neutral-600 italic;
+      }
+
+      /* Identifiers / variables */
+      .hljs-variable,
+      .hljs-title {
+        @apply text-slate-200;
+      }
+
+      /* Classes */
+      .hljs-class {
+        @apply text-blue-400;
+      }
+
+      /* Properties / attributes */
+      .hljs-attr,
+      .hljs-attribute {
+        @apply text-purple-400;
+      }
+
+      /* JSX / HTML tags */
+      .hljs-tag,
+      .hljs-name {
+        @apply text-slate-200;
+      }
+
+      /* Built-ins / entities */
+      .hljs-built_in,
+      .hljs-function {
+        @apply text-blue-400;
+      }
+
+      /* Punctuation / signs */
+      .hljs-punctuation {
+        @apply text-slate-400;
+      }
+
+      .language-xml {
+        .hljs-tag {
+          @apply text-slate-400;
+        }
+
+        .hljs-name {
+          @apply text-blue-400;
+        }
+      }
+    }
+
+    code.language-console {
+      .hljs-string {
+        @apply text-emerald-400;
+      }
+
+      .hljs-keyword {
+        @apply text-red-400;
+      }
+
+      .hljs-comment {
+        @apply text-neutral-600 italic;
+      }
+
+      .hljs-variable,
+      .hljs-title {
+        @apply text-slate-200;
+      }
+
+      .hljs-class,
+      .hljs-built_in,
+      .hljs-function {
+        @apply text-blue-400;
+      }
+
+      .hljs-attr,
+      .hljs-attribute {
+        @apply text-purple-400;
+      }
+
+      .hljs-punctuation {
+        @apply text-slate-400;
+      }
+    }
+
+    code.language-CSS {
+      .hljs-keyword,
+      .hljs-selector-tag {
+        @apply text-rose-400;
+      }
+
+      .hljs-comment {
+        @apply text-slate-500 italic;
+      }
+
+      .hljs-tag,
+      .hljs-name,
+      .hljs-class {
+        @apply text-indigo-400;
+      }
+
+      .hljs-attr,
+      .hljs-attribute,
+      .hljs-built_in {
+        @apply text-amber-400;
+      }
+
+      .hljs-punctuation {
+        @apply text-slate-400;
+      }
+
+      .hljs-string {
+        @apply text-emerald-400;
+      }
+
+      .hljs-variable,
+      .hljs-title {
+        @apply text-slate-200;
+      }
+    }
+  }
+
+  h2 {
+    @apply text-primary mb-8 text-2xl leading-tight font-bold;
+
+    p + &,
+    p + p,
+    p + h2 {
+      @apply mt-8;
+    }
+
+    pre + & {
+      @apply mt-8;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .content h2 {
+      @apply text-2xl;
+    }
+  }
+
+  p {
+    @apply text-secondary text-base leading-8;
+
+    a {
+      @apply text-secondary text-sm underline underline-offset-4 transition-colors;
+
+      &:hover {
+        @apply text-primary;
+      }
+    }
+
+    p + & {
+      @apply mt-8;
+    }
+
+    pre + & {
+      @apply mt-8;
+    }
+
+    code {
+      color: var(--color-secondary);
+      background-color: var(--color-code);
+      @apply rounded-md px-2 py-1 text-sm;
+    }
+  }
+
+  ul {
+    @apply list-disc ps-8;
+
+    & + h2 {
+      @apply mt-8;
+    }
+
+    p + & {
+      @apply mt-8;
+    }
+
+    & + p {
+      @apply mt-8;
+    }
+
+    li + li {
+      @apply mt-3;
+    }
+
+    li {
+      @apply text-secondary leading-8;
+
+      code {
+        @apply text-secondary bg-code rounded-md px-2 py-1 text-sm;
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+---
+import { ArrowRight } from "lucide-astro";
+
+import { dateTimeFormat } from "@src/utility/date-time-format";
+import type { Company } from "@src/constants/companies";
+
+type CareerCard = {
+  company: Company;
+};
+
+type Props = CareerCard;
+
+const { company } = Astro.props;
+---
+
+<div data-testid="career-card" class="flex flex-col gap-2">
+  <h3 class="text-primary text-sm font-medium lg:text-base">{company.role}</h3>
+  <p class="text-secondary flex items-center gap-1 text-sm lg:text-base">
+    <a
+      href={company.url}
+      target="_blank"
+      class="text-primary hover:text-secondary underline transition-colors"
+    >
+      {company.name}
+    </a>
+    {
+      company.outsourced?.map(outsourced => (
+        <span class="flex items-center">
+          <abbr
+            title={`Contracted at ${outsourced.name} through ${company.name}`}
+          >
+            <ArrowRight class="text-secondary hover:text-primary mx-1 h-4 w-4 cursor-help" />
+          </abbr>
+          <a
+            href={outsourced.url}
+            target="_blank"
+            class="text-primary hover:text-secondary underline transition-colors"
+          >
+            {outsourced.name}
+          </a>
+        </span>
+      ))
+    }
+    {" - "}
+    <span class="inline-block not-italic">{company.location}</span>
+  </p>
+  <p class="text-secondary text-sm lg:text-base">
+    <span>{dateTimeFormat(new Date(company.startedAt))}</span>
+    {" - "}
+    {
+      company?.endedAt ? (
+        <span>{dateTimeFormat(new Date(company.endedAt))}</span>
+      ) : (
+        <span>present</span>
+      )
+    }
+  </p>
+</div>

@@ -1,0 +1,17 @@
+@theme {
+  --color-code: #1e293b;
+  --color-accent: #f8fafc;
+  --color-surface: #1e293b;
+  --color-foreground: #b3bed0;
+  --color-background: #020617;
+
+  --color-primary: var(--color-accent);
+  --color-secondary: var(--color-foreground);
+  --color-tertiary: var(--color-surface);
+  --color-highlight: var(--color-accent);
+  --color-ocean: #3b82f6;
+
+  --font-sans:
+    "Poppins", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}

@@ -1,0 +1,23 @@
+---
+import PageWrapper from "@src/components/layouts/wrapper.astro";
+import PageHeader from "@src/components/layouts/header.astro";
+import BiographySection from "@src/features/projects/sections/biography.astro";
+import ProjectsSection from "@src/features/projects/sections/projects.astro";
+import { PAGE_INFO } from "@src/constants/page-info";
+---
+
+<PageWrapper
+  title={PAGE_INFO.PROJECTS.TITLE}
+  description={PAGE_INFO.PROJECTS.DESCRIPTION}
+>
+  <main class="flex flex-col gap-14">
+    <PageHeader
+      title={PAGE_INFO.PROJECTS.TITLE}
+      description={PAGE_INFO.PROJECTS.DESCRIPTION}
+    />
+
+    <BiographySection />
+
+    <ProjectsSection />
+  </main>
+</PageWrapper>

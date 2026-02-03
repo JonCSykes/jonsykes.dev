@@ -1,0 +1,22 @@
+---
+import { Sparkles } from "lucide-astro";
+
+type Props = {
+  disabled?: boolean;
+  title?: string;
+};
+
+const { disabled, title } = Astro.props as Props;
+---
+
+<button
+  id="summary-button"
+  type="button"
+  title={title}
+  aria-label={title}
+  disabled={disabled}
+  class="ai-neon-effect relative flex items-center justify-center gap-2 rounded-md border-2 border-slate-800 bg-slate-900 px-4 py-2 whitespace-nowrap transition-colors hover:bg-slate-800/50"
+>
+  <Sparkles class="relative h-4 w-4 text-white" />
+  <span id="summary-button-text">Summarize with AI</span>
+</button>

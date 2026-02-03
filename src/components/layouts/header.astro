@@ -1,0 +1,22 @@
+---
+type Props = {
+  title: string;
+  description: string;
+  customClass?: string;
+};
+
+const { title, description, customClass } = Astro.props;
+---
+
+<header class={customClass}>
+  <h1
+    class="text-primary text-3xl leading-tight font-semibold text-balance lg:text-4xl"
+  >
+    {title}
+  </h1>
+  <h2
+    class="text-secondary mt-3 max-w-[384px] text-sm leading-relaxed text-balance lg:text-base"
+  >
+    {description}
+  </h2>
+</header>

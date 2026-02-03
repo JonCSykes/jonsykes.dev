@@ -1,0 +1,16 @@
+---
+type Props = {
+  background?: "black" | "white";
+  className?: string;
+  alt?: string;
+};
+
+const { background = "black", className, alt = "jonsykes.dev" } = Astro.props;
+
+const logoSrc =
+  background === "white"
+    ? "/logo/jonsykesdev_logo-white-bg.svg"
+    : "/logo/jonsykesdev_logo-black-bg.svg";
+---
+
+<img src={logoSrc} alt={alt} class={className} />

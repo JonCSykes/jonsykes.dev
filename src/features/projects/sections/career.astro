@@ -1,0 +1,15 @@
+---
+import CareerCard from "@src/features/projects/components/career-card.astro";
+
+import { COMPANIES } from "@src/constants/companies";
+---
+
+<section>
+  <h2 class="text-primary mb-8 text-xl leading-tight font-semibold lg:text-2xl">
+    career
+  </h2>
+
+  <div class="flex flex-col gap-8">
+    {COMPANIES.map(company => <CareerCard company={company} />)}
+  </div>
+</section>

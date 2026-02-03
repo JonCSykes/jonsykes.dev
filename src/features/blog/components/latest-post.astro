@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import ContentItem from "./content-item.astro";
+
+const posts = await getCollection("posts");
+const orderedByDate = posts.sort((a, b) => {
+  return new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf();
+});
+const latestPost = orderedByDate[0];
+---
+
+{
+  latestPost && (
+    <section class="flex w-full max-w-[520px] flex-col gap-6">
+      <div class="flex items-center justify-between">
+        <h3 class="text-primary text-sm font-semibold tracking-[0.18em] uppercase">
+          Latest post
+        </h3>
+        <a
+          href="/blog"
+          class="text-secondary hover:text-primary text-xs tracking-[0.2em] uppercase transition-colors"
+        >
+          All posts
+        </a>
+      </div>
+      <ContentItem
+        slug={latestPost.id}
+        {...latestPost.data}
+        body={latestPost.body}
+      />
+    </section>
+  )
+}

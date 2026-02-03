@@ -1,0 +1,14 @@
+---
+import ProjectCard from "@src/features/projects/components/project-card.astro";
+import { PROJECTS } from "@src/constants/projects";
+---
+
+<section>
+  <h2 class="text-primary mb-8 text-xl leading-tight font-semibold lg:text-2xl">
+    projects
+  </h2>
+
+  <div class="flex flex-col gap-6">
+    {PROJECTS.map(project => <ProjectCard project={project} />)}
+  </div>
+</section>
