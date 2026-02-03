@@ -1,0 +1,63 @@
+---
+import { Linkedin, Twitter, Copy, Check } from "lucide-astro";
+
+type Props = {
+  URLText: string;
+};
+
+const { URLText } = Astro.props;
+
+const currentUrl = `https://jonsykes.dev${Astro.url.pathname}`;
+
+const shareLinkedInUrl = `https://www.linkedin.com/sharing/share-offsite?text=${URLText}:+%20${currentUrl}&url=${currentUrl}`;
+const shareTwitterInUrl = `https://x.com/intent/post?text=${URLText}:+%20${currentUrl}&url=${currentUrl}`;
+---
+
+<div
+  class="bg-tertiary/50 flex w-fit items-center gap-2.5 rounded-md px-4 py-2"
+>
+  <span class="text-secondary text-sm lg:text-base">share</span>
+  <a
+    title="Share on LinkedIn"
+    target="_blank"
+    class="group bg-background/50 hover:bg-background rounded-md p-2 transition-all"
+    href={shareLinkedInUrl}
+  >
+    <Linkedin class="text-secondary h-5 w-5" />
+  </a>
+  <a
+    title="Share on X"
+    target="_blank"
+    class="group bg-background/50 hover:bg-background rounded-md p-2 transition-all"
+    href={shareTwitterInUrl}
+  >
+    <Twitter class="text-secondary h-5 w-5" />
+  </a>
+  <button
+    type="button"
+    title="Copy post URL"
+    class="bg-background/50 hover:bg-background rounded-md p-2 transition-all"
+  >
+    <Copy class="copy-icon text-secondary h-5 w-5" />
+    <Check class="check-icon hidden h-5 w-5 text-green-500" />
+  </button>
+</div>
+
+<script>
+  const copyURLButton = document
+    .querySelectorAll("button[title='Copy post URL']")
+    .item(0);
+  const checkIcon = document.querySelectorAll(".check-icon").item(0);
+  const copyIcon = document.querySelectorAll(".copy-icon").item(0);
+
+  copyURLButton.addEventListener("click", () => {
+    navigator.clipboard.writeText(window.location.href);
+
+    checkIcon.classList.remove("hidden");
+    copyIcon.classList.add("hidden");
+    setTimeout(() => {
+      checkIcon.classList.add("hidden");
+      copyIcon.classList.remove("hidden");
+    }, 3000);
+  });
+</script>

@@ -1,0 +1,47 @@
+---
+import { dateTimeFormat } from "@src/utility/date-time-format";
+import { readingTime } from "@src/features/blog/utility";
+
+type Props = {
+  title: string;
+  date: string;
+  slug: string;
+  body: string | undefined;
+};
+
+const post = Astro.props;
+
+const date = new Date(post.date);
+const readingTimeInMinutes = readingTime(post.body || "");
+
+const hoverClasses =
+  "relative before:absolute before:left-[50%] before:top-[50%] before:z-[-1] before:h-[calc(100%+32px)] before:w-[calc(100%+32px)] before:-translate-x-1/2 before:translate-y-[-50%] before:rounded-md before:bg-tertiary before:opacity-0 before:transition-opacity before:content-[''] hover:before:opacity-35";
+---
+
+<a href={`/blog/${post.slug}`} class={hoverClasses}>
+  <article class={`flex flex-col gap-2 ${hoverClasses}`}>
+    <h3 class="text-primary text-base leading-tight font-semibold lg:text-xl">
+      {post.title}
+    </h3>
+    <div class="flex items-center gap-4">
+      {
+        post.date && (
+          <time
+            datetime={date.toISOString()}
+            class="text-secondary text-sm leading-tight lg:text-base"
+          >
+            {`${date.getDate()} ${dateTimeFormat(new Date(date))}`}
+          </time>
+        )
+      }
+      {
+        readingTimeInMinutes > 0 && (
+          <Fragment>
+            <span class="text-secondary">|</span>
+            <span class="text-secondary">{`${readingTimeInMinutes} minutes`}</span>
+          </Fragment>
+        )
+      }
+    </div>
+  </article>
+</a>

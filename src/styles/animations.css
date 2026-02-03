@@ -1,0 +1,77 @@
+@theme {
+  --animate-enter-down: enter-down 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --animate-exit-down: exit-down 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  @keyframes enter-down {
+    0% {
+      transform: translateY(-10px);
+      filter: blur(3px);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      filter: blur(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes exit-down {
+    0% {
+      transform: translateY(0);
+      filter: blur(0);
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateY(10px);
+      filter: blur(3px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes ai-neon-anim {
+    0% {
+      filter: blur(8px) hue-rotate(0deg);
+      opacity: 0.75;
+      inset: -2px;
+    }
+    50% {
+      filter: blur(12px) hue-rotate(180deg);
+      opacity: 1;
+      inset: -6px;
+    }
+    100% {
+      filter: blur(8px) hue-rotate(360deg);
+      opacity: 0.75;
+      inset: -2px;
+    }
+  }
+}
+
+.ai-neon-effect::before {
+  @apply absolute -inset-1 -z-10 rounded-[inherit] content-[''];
+  @apply animate-[ai-neon-anim_4s_linear_infinite] opacity-75 blur-sm;
+  @apply transition-[opacity,filter] duration-300;
+
+  background:
+    radial-gradient(
+      120% 120% at 0% 0%,
+      rgba(56, 189, 248, 0.6),
+      transparent 60%
+    ),
+    radial-gradient(
+      120% 120% at 100% 100%,
+      rgba(99, 102, 241, 0.6),
+      transparent 60%
+    ),
+    radial-gradient(
+      120% 120% at 50% 100%,
+      rgba(148, 163, 184, 0.6),
+      transparent 60%
+    );
+}
+
+.ai-neon-effect:hover::before {
+  @apply opacity-100 blur-md;
+}

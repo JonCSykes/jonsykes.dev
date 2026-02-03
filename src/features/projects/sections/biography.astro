@@ -1,0 +1,49 @@
+---
+import GreatImage from "@src/components/great-image/index.astro";
+
+const image = "/images/assets/jon_portrait.jpg";
+
+const defaultImageSize = {
+  width: 200,
+  height: 200,
+};
+---
+
+<section class="flex flex-col items-start gap-8 sm:flex-row">
+  <GreatImage
+    src={image}
+    width={defaultImageSize.width}
+    height={defaultImageSize.height}
+    alt="Jon Sykes portrait"
+    customClass={{
+      common:
+        "h-[150px] w-[150px] rounded-lg object-cover sm:h-[230px] sm:w-[175px]",
+    }}
+  />
+
+  <div class="flex-1">
+    <h3
+      class="text-primary mb-4 text-xl leading-tight font-semibold lg:text-2xl"
+    >
+      Hi, I'm Jon.
+    </h3>
+    <div class="flex flex-col gap-8">
+      <p
+        class="text-secondary text-sm leading-relaxed text-balance lg:text-base"
+      >
+        Builder and founder, and an engineering leader by trade. I spend a lot
+        of time designing systems, shipping software, and figuring out which
+        “best practices” actually hold up in the real world.
+      </p>
+      <p
+        class="text-secondary text-sm leading-relaxed text-balance lg:text-base"
+      >
+        This blog is where I write the posts I wish existed. Practical deep
+        dives on AI, architecture, and modern engineering. I share what is
+        working, what is not, and why. Usually with examples, decision rules,
+        and lessons learned the hard way. No hype. Just honest notes from my
+        experiences.
+      </p>
+    </div>
+  </div>
+</section>

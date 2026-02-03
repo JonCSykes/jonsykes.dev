@@ -1,0 +1,20 @@
+---
+import PageHeader from "@src/components/layouts/header.astro";
+import PageWrapper from "@src/components/layouts/wrapper.astro";
+import ContentList from "@src/features/blog/components/content-list.astro";
+
+import { PAGE_INFO } from "@src/constants/page-info";
+---
+
+<PageWrapper
+  title={PAGE_INFO.BLOG.TITLE}
+  description={PAGE_INFO.BLOG.DESCRIPTION}
+>
+  <main class="flex flex-col gap-14">
+    <PageHeader
+      title={PAGE_INFO.BLOG.TITLE}
+      description={PAGE_INFO.BLOG.DESCRIPTION}
+    />
+    <ContentList />
+  </main>
+</PageWrapper>

@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+import ContentItem from "./content-item.astro";
+
+const posts = await getCollection("posts");
+const orderedByDate = posts.sort((a, b) => {
+  return new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf();
+});
+---
+
+<section class="flex flex-col gap-10">
+  {
+    orderedByDate?.map(post => (
+      <ContentItem slug={post.id} {...post.data} body={post.body} />
+    ))
+  }
+</section>

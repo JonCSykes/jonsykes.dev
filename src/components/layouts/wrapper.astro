@@ -1,0 +1,36 @@
+---
+import "../../styles/globals.css";
+
+import Metadata from "./metadata.astro";
+import Navbar from "./navbar.astro";
+import Footer from "./footer.astro";
+
+type Props = {
+  title?: string;
+  description?: string;
+  opengraphImage?: string;
+};
+
+const { title, description, opengraphImage } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-br">
+  <Metadata
+    title={title}
+    description={description}
+    opengraphImage={opengraphImage}
+  />
+
+  <body
+    class={"mx-auto max-w-[800px] bg-background px-6 lg:px-0 flex flex-col gap-8"}
+  >
+    <div
+      class="lef-0 absolute -top-40 z-[-1] h-96 w-full -translate-x-1/3 rotate-45 rounded-full bg-slate-900/70 blur-3xl lg:w-[700px]"
+    >
+    </div>
+    <Navbar />
+    <slot />
+    <Footer />
+  </body>
+</html>

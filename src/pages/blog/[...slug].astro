@@ -1,0 +1,273 @@
+---
+import "../../styles/content.css";
+
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+import Sparkles from "lucide-astro/Sparkles";
+
+import PageWrapper from "@src/components/layouts/wrapper.astro";
+import PageHeader from "@src/components/layouts/header.astro";
+import BackToPrev from "@src/features/blog/components/back-to-prev.astro";
+import ShareBar from "@src/features/blog/components/share-bar.astro";
+import GreatImage from "@src/components/great-image/index.astro";
+import SummaryAIButton from "@src/features/blog/components/summary-ai-button.astro";
+
+import { readingTime } from "@src/features/blog/utility";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: post,
+  }));
+}
+
+type Props = CollectionEntry<"posts">;
+
+const post = Astro.props;
+
+const date = new Date(post.data.date);
+const readingTimeInMinutes = readingTime(post.body || "");
+
+const { Content } = await render(post);
+
+const openGraphImage = `images/posts/${post.id}/cover.jpg`;
+
+const coverURL = post.data.cover;
+
+const defaultCoverSize = {
+  height: 285,
+  width: 800,
+};
+---
+
+<PageWrapper
+  title={post.data.title}
+  description={post.data.summary}
+  opengraphImage={openGraphImage}
+>
+  <header>
+    <div class="mb-8">
+      <BackToPrev href="/blog"> all posts</BackToPrev>
+    </div>
+
+    <GreatImage
+      src={coverURL}
+      alt={post.data.title}
+      width={defaultCoverSize.width}
+      height={defaultCoverSize.height}
+      useRemoteBlur={false}
+      customClass={{
+        common:
+          "aspect-video w-full rounded-md object-cover sm:aspect-[16/5.68]",
+      }}
+    />
+
+    <div class="my-8 flex flex-col-reverse gap-8 sm:mt-8 sm:mb-10 sm:flex-row">
+      <PageHeader
+        title={post.data.title}
+        description={post.data.summary}
+        customClass="flex-1"
+      />
+      <section class="flex flex-row gap-8 sm:flex-col">
+        {
+          date && (
+            <p class="flex flex-col">
+              <span class="text-secondary mb-1 block text-sm">
+                published on
+              </span>
+              <time
+                class="text-primary text-base leading-tight"
+                datetime="2023-06-22T00:00:00.000Z"
+              >
+                {new Date(date).toLocaleDateString("pt-BR")}
+              </time>
+            </p>
+          )
+        }
+        {
+          date && (
+            <p class="flex flex-col">
+              <span class="text-secondary mb-1 block text-sm">
+                reading time
+              </span>
+              <span class="text-primary text-base leading-tight">
+                {readingTimeInMinutes} minutos
+              </span>
+            </p>
+          )
+        }
+      </section>
+    </div>
+    <div
+      class="mb-8 flex flex-col-reverse items-start gap-8 md:flex-row md:items-center md:gap-2"
+    >
+      <SummaryAIButton />
+      <ShareBar URLText={post.data.title} />
+    </div>
+  </header>
+  <div id="content-wrapper" class="content">
+    <summary-content-ai data-post-body={post.body}>
+      <div id="summary-container" class="summary-container mb-8 hidden">
+        <header class="mb-7 flex items-center gap-2">
+          <Sparkles class="h-6 w-6 text-white" />
+          <h2 id="summary-title" class="m-0!">Summary</h2>
+        </header>
+        <div
+          id="summary-content"
+          class="summary-content ai-neon-effect border-tertiary bg-background relative rounded-xl border p-8 transition-colors"
+        >
+          <!-- IA Resum injected -->
+          <div id="summary-skeleton-content" class="flex flex-col gap-4">
+            <div
+              class="bg-tertiary w-full max-w-[400px] animate-pulse rounded-md p-4"
+            >
+            </div>
+            <div class="bg-tertiary w-full animate-pulse rounded-md p-4"></div>
+            <div class="bg-tertiary w-full animate-pulse rounded-md p-4"></div>
+            <div class="bg-tertiary w-full animate-pulse rounded-md p-4"></div>
+          </div>
+        </div>
+      </div>
+    </summary-content-ai>
+    <Content />
+  </div>
+  <footer class="text-secondary mt-8 rounded-md leading-relaxed text-balance">
+    <h5 class="mb-4 text-xl font-semibold text-white lg:text-3xl">
+      You made it!
+    </h5>
+    <p class="text-sm lg:text-base">
+      Thanks for reading all the way through. I appreciate it! 🎉
+    </p>
+  </footer>
+</PageWrapper>
+<script>
+  import { waitForAnimation } from "@src/utility/wait-for-animation";
+
+  class SummaryContentAI extends HTMLElement {
+    connectedCallback() {
+      let isSummaryRetry = false;
+
+      const postBody = this.dataset.postBody;
+
+      const summaryButton = document.getElementById("summary-button");
+      const buttonText = document.getElementById("summary-button-text");
+      const summaryTitle = this.querySelector<HTMLElement>("#summary-title");
+      const summarySkeletonContent = this.querySelector<HTMLElement>(
+        "#summary-skeleton-content",
+      );
+      const summaryContainer =
+        this.querySelector<HTMLElement>("#summary-container");
+      const summaryContent =
+        this.querySelector<HTMLElement>("#summary-content");
+
+      if (
+        !summaryButton ||
+        !buttonText ||
+        !summarySkeletonContent ||
+        !summaryTitle ||
+        !summaryContainer ||
+        !summaryContent
+      ) {
+        // eslint-disable-next-line no-console
+        return console.error("SummaryContentAI: Some elements are missing", {
+          summaryButton,
+          buttonText,
+          summarySkeletonContent,
+          summaryTitle,
+          summaryContainer,
+          summaryContent,
+        });
+      }
+
+      const resetAnimations = () => {
+        summaryContainer.classList.remove(
+          "animate-enter-down",
+          "animate-exit-down",
+        );
+        summaryTitle.classList.remove(
+          "animate-enter-down",
+          "animate-exit-down",
+        );
+      };
+
+      const handleSummaryClick = async () => {
+        summaryButton.setAttribute("disabled", "true");
+        summaryTitle.textContent = "Generating summary...";
+
+        try {
+          if (isSummaryRetry) {
+            summaryButton.classList.replace(
+              "border-red-800",
+              "border-slate-800",
+            );
+            summaryButton.classList.replace("text-red-500/50", "text-white");
+            summaryButton.classList.replace("bg-red-950/50", "bg-slate-900");
+          }
+
+          resetAnimations();
+
+          summaryContainer.classList.remove("hidden");
+
+          summaryContainer.offsetHeight;
+
+          summaryContainer.classList.add("animate-enter-down");
+          summaryTitle.classList.add("animate-enter-down");
+
+          await waitForAnimation(summaryContainer, "enter-down");
+
+          const response = await fetch("/api/summarize", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content: postBody }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            summaryButton.removeAttribute("disabled");
+            throw new Error(errorData.error);
+          }
+
+          summarySkeletonContent.classList.add("hidden");
+
+          const data = await response.json();
+          summaryContent.innerHTML = data.summary;
+
+          resetAnimations();
+
+          summaryTitle.textContent = "Your summary";
+          summaryTitle.offsetHeight;
+          summaryTitle.classList.add("animate-enter-down");
+
+          await waitForAnimation(summaryTitle, "enter-down");
+          isSummaryRetry = false;
+        } catch (error) {
+          isSummaryRetry = true;
+          buttonText.textContent = "Try again";
+
+          resetAnimations();
+
+          summaryContainer.offsetHeight;
+          summaryTitle.offsetHeight;
+
+          summaryContainer.classList.add("animate-exit-down");
+          summaryTitle.classList.add("animate-exit-down");
+
+          await waitForAnimation(summaryContainer, "exit-down");
+
+          summaryContainer.classList.add("hidden");
+          summaryButton.removeAttribute("disabled");
+          summaryButton.classList.replace("border-slate-800", "border-red-800");
+          summaryButton.classList.replace("text-white", "text-red-500/50");
+          summaryButton.classList.replace("bg-slate-900", "bg-red-950/50");
+        }
+      };
+
+      summaryButton.addEventListener("click", handleSummaryClick);
+    }
+  }
+
+  customElements.define("summary-content-ai", SummaryContentAI);
+</script>
