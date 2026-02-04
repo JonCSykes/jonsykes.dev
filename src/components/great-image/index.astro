@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { fetchGreatImage } from "./utility/fetch-great-image";
 
 type Props = {
@@ -23,7 +22,6 @@ const {
   height,
   width,
   alt,
-  quality = 70,
   useRemoteBlur = true,
   baseURL,
   customClass,
@@ -47,27 +45,13 @@ const defaultCoverSize = {
     class={`absolute blur-xl inset-0 z-[-1] ${customClass?.common || ""} ${customClass?.placeholder || ""}`}
     alt={alt}
   />
-  {
-    image.isRemote ? (
-      <Image
-        src={image.src}
-        alt={alt}
-        width={defaultCoverSize.width}
-        height={defaultCoverSize.height}
-        class={`${customClass?.common || ""} ${customClass?.image || ""}`}
-        fetchpriority="high"
-        loading="lazy"
-        quality={quality}
-      />
-    ) : (
-      <img
-        src={image.src}
-        alt={alt}
-        width={defaultCoverSize.width}
-        height={defaultCoverSize.height}
-        class={`${customClass?.common || ""} ${customClass?.image || ""}`}
-        loading="lazy"
-      />
-    )
-  }
+  <img
+    src={image.src}
+    alt={alt}
+    width={defaultCoverSize.width}
+    height={defaultCoverSize.height}
+    class={`${customClass?.common || ""} ${customClass?.image || ""}`}
+    loading="lazy"
+    fetchpriority={image.isRemote ? "high" : undefined}
+  />
 </div>
