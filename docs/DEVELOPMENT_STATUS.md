@@ -1,5 +1,9 @@
 # Development Status
 
+## 2026-02-04
+
+- Added Cloudflare Pages Wrangler config (`wrangler.jsonc`) for `jonsykes-web`.
+
 ## 2026-02-03
 
 - Added new skill `build-astro-websties` under `~/.codex/skills/`.
