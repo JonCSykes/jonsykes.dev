@@ -1,5 +1,11 @@
 # Development Status
 
+## 2026-02-04
+
+- Added Cloudflare Pages Wrangler config (`wrangler.jsonc`) for `jonsykes-web`.
+- Switched Astro adapter to `@astrojs/cloudflare` for Cloudflare deployment.
+- Removed `astro:assets` usage in `GreatImage` to avoid Sharp on Cloudflare.
+
 ## 2026-02-03
 
 - Added new skill `build-astro-websties` under `~/.codex/skills/`.
