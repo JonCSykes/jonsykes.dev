@@ -3,9 +3,15 @@ import Logo from "./logo.astro";
 ---
 
 <nav class="flex h-24 items-center justify-between gap-8">
-  <a href="/" class="flex items-center">
-    <Logo background="black" className="h-[3.0rem] w-auto" />
-  </a>
+  <div class="flex items-center gap-4">
+    <a href="/" class="flex items-center">
+      <Logo background="black" className="h-[3.0rem] w-auto" />
+    </a>
+    <span
+      id="logo-quip"
+      class="logo-quip text-secondary text-xs leading-tight sm:text-sm lg:text-base"
+    ></span>
+  </div>
 
   <div class="flex gap-8 overflow-auto p-4">
     <a
@@ -30,6 +36,60 @@ import Logo from "./logo.astro";
 </nav>
 <script>
   window.addEventListener("DOMContentLoaded", () => {
+    const quipMessages = [
+      "Behold! a website.",
+      "This is fine 🔥",
+      "Respectfully… no.",
+      "Mostly harmless.",
+      "New build, who dis?",
+      "Pls no meetings.",
+      "I swear this made sense earlier.",
+      "Here lies my free time.",
+      "Behold! my coping mechanism.",
+      "Please admire the illusion of control.",
+    ];
+
+    const quipElement = document.getElementById("logo-quip");
+
+    if (quipElement) {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const now = new Date();
+      const seed =
+        now.getTime() ^
+        (now.getSeconds() << 24) ^
+        (now.getMinutes() << 16) ^
+        (now.getHours() << 8);
+      const xorshifted = seed ^ (seed << 13) ^ (seed >> 17) ^ (seed << 5);
+      const messageIndex = Math.abs(xorshifted) % quipMessages.length;
+      const message = quipMessages[messageIndex];
+
+      if (prefersReducedMotion) {
+        quipElement.textContent = message;
+        quipElement.classList.add("is-done");
+      } else {
+        quipElement.textContent = "";
+        quipElement.classList.add("is-typing");
+
+        let index = 0;
+        const typeNextCharacter = () => {
+          quipElement.textContent = message.slice(0, index + 1);
+          index += 1;
+
+          if (index < message.length) {
+            const delay = 28 + Math.random() * 60;
+            window.setTimeout(typeNextCharacter, delay);
+          } else {
+            quipElement.classList.remove("is-typing");
+            quipElement.classList.add("is-done");
+          }
+        };
+
+        window.setTimeout(typeNextCharacter, 300);
+      }
+    }
+
     const activeLinkClasses =
       "relative text-accent after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+14px)] after:w-[calc(100%+32px)] after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-md after:bg-slate-900 after:content-['']";
     const nonActiveLinkClasses =
@@ -53,3 +113,42 @@ import Logo from "./logo.astro";
     });
   });
 </script>
+<style>
+  .logo-quip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1em;
+  }
+
+  .logo-quip::after {
+    content: "|";
+    margin-left: 0.2em;
+    opacity: 0;
+  }
+
+  .logo-quip.is-typing::after {
+    opacity: 0.7;
+    animation: logo-quip-blink 1s steps(1, end) infinite;
+  }
+
+  .logo-quip.is-done::after {
+    opacity: 0;
+  }
+
+  @keyframes logo-quip-blink {
+    0%,
+    49% {
+      opacity: 0.7;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-quip.is-typing::after {
+      animation: none;
+    }
+  }
+</style>

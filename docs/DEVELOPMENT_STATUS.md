@@ -6,6 +6,8 @@
 - Switched Astro adapter to `@astrojs/cloudflare` for Cloudflare deployment.
 - Removed `astro:assets` usage in `GreatImage` to avoid Sharp on Cloudflare.
 - Added `wrangler` as a dev dependency for Pages deploys.
+- Added a randomized typed quip next to the navbar logo.
+- Updated quip selection to use a time-based seed including seconds.
 
 ## 2026-02-03
 
