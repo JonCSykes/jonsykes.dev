@@ -5,6 +5,7 @@
 - Added Cloudflare Pages Wrangler config (`wrangler.jsonc`) for `jonsykes-web`.
 - Switched Astro adapter to `@astrojs/cloudflare` for Cloudflare deployment.
 - Removed `astro:assets` usage in `GreatImage` to avoid Sharp on Cloudflare.
+- Added `wrangler` as a dev dependency for Pages deploys.
 
 ## 2026-02-03
 
