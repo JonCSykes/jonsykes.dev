@@ -45,8 +45,8 @@ export const POST: APIRoute = async ({ request }) => {
     const AIResponse = await genAI.models.generateContent({
       model: "gemini-2.5-flash",
       contents: `
-        Summarize the following text to 20% in Brazilian Portuguese,
-        keeping the main ideas in a professional and accessible tone.
+Summarize the following text to 20% in English,
+         keeping the main ideas in a professional and accessible tone.
         
         The summary must be formatted in MARKDOWN with elements limit to header h2 max down level.
         Ensure that lists are just UL
