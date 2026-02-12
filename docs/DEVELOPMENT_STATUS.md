@@ -1,5 +1,9 @@
 # Development Status
 
+## 2026-02-12
+
+- Fixed favicon metadata links in `src/components/layouts/metadata.astro` to use the proper icon set (`favicon.ico`, `favicon.svg`, `favicon-96x96.png`, Apple touch icon, and manifest) instead of a mis-declared PNG link.
+
 ## 2026-02-11
 
 - Styled blog post blockquotes as thought bubbles in `src/styles/content.css`.
