@@ -21,7 +21,6 @@
 This is the source for https://jonsykes.dev. It includes:
 
 - A blog powered by Astro Content Collections
-- AI summary generation for posts
 - A projects page with external links
 - A personal biography section with a local portrait asset
 
@@ -31,8 +30,6 @@ This is the source for https://jonsykes.dev. It includes:
 - 🔥 _TailwindCSS - Style_
 - 🔥 _TypeScript - Typing_
 - 🔥 _Content Collections API - Content_
-- 🔥 _AI summary generation_
-- 🔥 _Redis - Summary cache_
 - 🔥 _Plaiceholder - Image placeholders_
 - 🔥 _Tooling - ESLint, Prettier, Husky_
 
@@ -82,12 +79,7 @@ cp .env.example .env
 Required values:
 
 ```env
-# AI
-GEMINI_API_KEY=<your_gemini_api_key>
-
-# UPSTASH REDIS
-REDIS_URL=<your_upstash_redis_url>
-REDIS_TOKEN=<your_upstash_redis_token>
+# No required environment variables for core site/blog rendering.
 ```
 
 ## 🧞 Commands
@@ -101,4 +93,3 @@ REDIS_TOKEN=<your_upstash_redis_token>
 | `pnpm run lint`       | Run ESLint with autofix                      |
 | `pnpm run format`     | Run Prettier                                |
 | `pnpm run astro sync` | Sync content collections and generate types  |
-

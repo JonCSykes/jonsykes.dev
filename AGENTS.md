@@ -30,16 +30,16 @@ This repository is the source for https://jonsykes.dev, an Astro site for sharin
 
 ## Environment Variables
 See `.env.example`. Do not commit `.env`.
-- `GEMINI_API_KEY`
-- `REDIS_URL`
-- `REDIS_TOKEN`
+- No required environment variables for core site/blog rendering.
 
 ## Content Authoring
 Blog posts live under `src/content/posts/` and are validated by `src/content.config.ts`.
 Required frontmatter fields:
 - `title` (string)
 - `cover` (string)
+- `thumbnail` (string, optional; falls back to `cover` in list cards)
 - `summary` (string)
+- `aiUsage` (string, optional)
 - `date` (date)
 - `isDraft` (boolean, default false)
 
