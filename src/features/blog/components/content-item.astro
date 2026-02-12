@@ -1,15 +1,20 @@
 ---
+import GreatImage from "@src/components/great-image/index.astro";
 import { dateTimeFormat } from "@src/utility/date-time-format";
 import { readingTime } from "@src/features/blog/utility";
 
 type Props = {
   title: string;
-  date: string;
+  summary: string;
+  thumbnail?: string;
+  cover: string;
+  date: string | Date;
   slug: string;
   body: string | undefined;
 };
 
 const post = Astro.props;
+const thumbnailSrc = post.thumbnail || post.cover;
 
 const date = new Date(post.date);
 const readingTimeInMinutes = readingTime(post.body || "");
@@ -19,29 +24,45 @@ const hoverClasses =
 ---
 
 <a href={`/blog/${post.slug}`} class={hoverClasses}>
-  <article class={`flex flex-col gap-2 ${hoverClasses}`}>
-    <h3 class="text-primary text-base leading-tight font-semibold lg:text-xl">
-      {post.title}
-    </h3>
-    <div class="flex items-center gap-4">
-      {
-        post.date && (
-          <time
-            datetime={date.toISOString()}
-            class="text-secondary text-sm leading-tight lg:text-base"
-          >
-            {`${date.getDate()} ${dateTimeFormat(new Date(date))}`}
-          </time>
-        )
-      }
-      {
-        readingTimeInMinutes > 0 && (
-          <Fragment>
-            <span class="text-secondary">|</span>
-            <span class="text-secondary">{`${readingTimeInMinutes} minutes`}</span>
-          </Fragment>
-        )
-      }
+  <article class={`flex items-start gap-4 ${hoverClasses}`}>
+    <GreatImage
+      src={thumbnailSrc}
+      alt={`${post.title} thumbnail`}
+      width={160}
+      height={96}
+      useRemoteBlur={false}
+      customClass={{
+        common: "h-20 w-32 shrink-0 rounded-md object-cover",
+      }}
+    />
+
+    <div class="flex min-w-0 flex-col gap-2">
+      <h3 class="text-primary text-base leading-tight font-semibold lg:text-xl">
+        {post.title}
+      </h3>
+      <p class="text-secondary text-sm leading-relaxed lg:text-base">
+        {post.summary}
+      </p>
+      <div class="flex items-center gap-4">
+        {
+          post.date && (
+            <time
+              datetime={date.toISOString()}
+              class="text-secondary text-sm leading-tight lg:text-base"
+            >
+              {`${date.getDate()} ${dateTimeFormat(new Date(date))}`}
+            </time>
+          )
+        }
+        {
+          readingTimeInMinutes > 0 && (
+            <Fragment>
+              <span class="text-secondary">|</span>
+              <span class="text-secondary">{`${readingTimeInMinutes} minutes`}</span>
+            </Fragment>
+          )
+        }
+      </div>
     </div>
   </article>
 </a>

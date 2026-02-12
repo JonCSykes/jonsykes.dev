@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><style>
+    #light-icon {
+      display: inline;
+    }
+    #dark-icon {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #light-icon {
+        display: none;
+      }
+      #dark-icon {
+        display: inline;
+      }
+    }
+  </style><g id="light-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g><g transform="matrix(1.804573040725424,0,0,1.804573040725424,20.967695074796836,0)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="530.9093" height="554.1477"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 530.9093 554.1477">
+  <path d="M346.7892,0v168.9257c-34.1022,78.734-64.4457,159.1039-98.0023,238.0615-3.202,7.5342-17.5513,43.9686-21.0602,46.8676-13.4355,11.1001-66.0206,13.381-83.9123,12.787-56.6192-1.8799-112.1603-19.7194-134.453-76.4806-2.6945-6.8608-9.3615-27.1932-9.3615-33.5403v-45.5831h103.6793c.0633,22.3188.2127,47.7449,24.0886,57.246,30.8271,12.2672,111.7669,8.2999,111.7669-38.4764V0h107.2544Z"></path>
+  <polygon points="530.9093 0 303.8875 554.1477 223.4467 554.1477 452.256 0 530.9093 0"></polygon>
+</svg></svg></g></g></svg></g><g id="dark-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g><g transform="matrix(1.804573040725424,0,0,1.804573040725424,20.967695074796836,0)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="530.9093" height="554.1477"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 530.9093 554.1477">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M346.7892,0v168.9257c-34.1022,78.734-64.4457,159.1039-98.0023,238.0615-3.202,7.5342-17.5513,43.9686-21.0602,46.8676-13.4355,11.1001-66.0206,13.381-83.9123,12.787-56.6192-1.8799-112.1603-19.7194-134.453-76.4806-2.6945-6.8608-9.3615-27.1932-9.3615-33.5403v-45.5831h103.6793c.0633,22.3188.2127,47.7449,24.0886,57.246,30.8271,12.2672,111.7669,8.2999,111.7669-38.4764V0h107.2544Z"></path>
+  <polygon class="cls-1" points="530.9093 0 303.8875 554.1477 223.4467 554.1477 452.256 0 530.9093 0"></polygon>
+</svg></svg></g></g></svg></g></svg>

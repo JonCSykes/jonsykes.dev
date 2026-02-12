@@ -11,7 +11,7 @@
   }
 
   pre {
-    @apply bg-code/50! rounded-md p-4;
+    @apply bg-code/50! overflow-x-auto rounded-xl border border-slate-700/80 p-4;
 
     ul + & {
       @apply mt-8;
@@ -27,6 +27,34 @@
 
     p + & {
       @apply mt-8;
+    }
+
+    &.astro-code {
+      @apply relative p-0;
+
+      code {
+        @apply block py-4 font-mono text-sm leading-6;
+        counter-reset: line;
+      }
+
+      code .line {
+        @apply block px-4;
+      }
+
+      code .line::before {
+        content: counter(line);
+        counter-increment: line;
+        @apply mr-4 inline-block w-8 border-r border-slate-700/70 pr-3 text-right text-xs text-slate-500 select-none;
+      }
+    }
+
+    &.astro-code[data-language]::before {
+      content: attr(data-language);
+      @apply text-secondary absolute top-3 right-4 rounded-full border border-slate-700/80 bg-slate-900/80 px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.12em] uppercase;
+    }
+
+    &.astro-code[data-language] code {
+      @apply pt-10;
     }
 
     code.language-jsx {
@@ -182,8 +210,12 @@
     }
   }
 
+  h3 {
+    @apply text-primary my-10 text-xl leading-tight font-semibold;
+  }
+
   p {
-    @apply text-secondary text-base leading-8;
+    @apply text-base leading-8 text-slate-300;
 
     a {
       @apply text-secondary text-sm underline underline-offset-4 transition-colors;
@@ -194,11 +226,15 @@
     }
 
     p + & {
-      @apply mt-8;
+      @apply mt-6 mb-6;
+    }
+
+    em {
+      @apply text-slate-400;
     }
 
     pre + & {
-      @apply mt-8;
+      @apply mt-8 mb-6;
     }
 
     code {
@@ -208,8 +244,52 @@
     }
   }
 
+  blockquote {
+    @apply text-secondary my-8 rounded-[28px] border border-slate-700/80 bg-slate-900/55 px-6 py-5 text-base leading-8 italic;
+
+    p {
+      @apply text-secondary text-base leading-8;
+
+      p + & {
+        @apply mt-4;
+      }
+    }
+  }
+
+  hr {
+    @apply my-16 border-0 border-t border-slate-700/80;
+  }
+
   ul {
     @apply list-disc ps-8;
+
+    & + h2 {
+      @apply mt-8;
+    }
+
+    p + & {
+      @apply mt-8;
+    }
+
+    & + p {
+      @apply mt-8;
+    }
+
+    li + li {
+      @apply mt-3;
+    }
+
+    li {
+      @apply text-secondary leading-8;
+
+      code {
+        @apply text-secondary bg-code rounded-md px-2 py-1 text-sm;
+      }
+    }
+  }
+
+  ol {
+    @apply list-decimal ps-8;
 
     & + h2 {
       @apply mt-8;

@@ -21,14 +21,9 @@
     "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
-    "@google/genai": "^1.34.0",
     "@tailwindcss/vite": "^4.1.18",
-    "@upstash/redis": "^1.36.0",
     "astro": "^5.16.11",
-    "highlight.js": "^11.11.1",
     "lucide-astro": "^0.473.0",
-    "marked": "^17.0.1",
-    "marked-highlight": "^2.2.3",
     "plaiceholder": "^3.0.0",
     "tailwindcss": "^4.1.18"
   },
@@ -40,6 +35,7 @@
     "prettier": "^3.4.2",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "remark-gemoji": "^8.0.0",
     "wrangler": "^4.62.0"
   }
 }

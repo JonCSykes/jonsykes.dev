@@ -3,9 +3,10 @@ type Props = {
   title: string;
   description: string;
   customClass?: string;
+  descriptionClass?: string;
 };
 
-const { title, description, customClass } = Astro.props;
+const { title, description, customClass, descriptionClass } = Astro.props;
 ---
 
 <header class={customClass}>
@@ -15,7 +16,10 @@ const { title, description, customClass } = Astro.props;
     {title}
   </h1>
   <h2
-    class="text-secondary mt-3 max-w-[384px] text-sm leading-relaxed text-balance lg:text-base"
+    class:list={[
+      "text-secondary mt-3 max-w-[384px] text-sm leading-relaxed text-balance lg:text-base",
+      descriptionClass,
+    ]}
   >
     {description}
   </h2>

@@ -4,14 +4,11 @@ import "../../styles/content.css";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
-import Sparkles from "lucide-astro/Sparkles";
-
 import PageWrapper from "@src/components/layouts/wrapper.astro";
 import PageHeader from "@src/components/layouts/header.astro";
 import BackToPrev from "@src/features/blog/components/back-to-prev.astro";
 import ShareBar from "@src/features/blog/components/share-bar.astro";
 import GreatImage from "@src/components/great-image/index.astro";
-import SummaryAIButton from "@src/features/blog/components/summary-ai-button.astro";
 
 import { readingTime } from "@src/features/blog/utility";
 
@@ -66,11 +63,21 @@ const defaultCoverSize = {
     />
 
     <div class="my-8 flex flex-col-reverse gap-8 sm:mt-8 sm:mb-10 sm:flex-row">
-      <PageHeader
-        title={post.data.title}
-        description={post.data.summary}
-        customClass="flex-1"
-      />
+      <div class="flex-1">
+        <PageHeader
+          title={post.data.title}
+          description={post.data.summary}
+          descriptionClass="max-w-none text-wrap"
+        />
+        {
+          post.data.aiUsage && (
+            <p class="text-secondary mt-4 text-sm leading-relaxed lg:text-base">
+              <span class="text-primary font-medium">AI usage:</span>
+              {` ${post.data.aiUsage}`}
+            </p>
+          )
+        }
+      </div>
       <section class="flex flex-row gap-8 sm:flex-col">
         {
           date && (
@@ -101,37 +108,11 @@ const defaultCoverSize = {
         }
       </section>
     </div>
-    <div
-      class="mb-8 flex flex-col-reverse items-start gap-8 md:flex-row md:items-center md:gap-2"
-    >
-      <SummaryAIButton />
+    <div class="mb-8">
       <ShareBar URLText={post.data.title} />
     </div>
   </header>
   <div id="content-wrapper" class="content">
-    <summary-content-ai data-post-body={post.body}>
-      <div id="summary-container" class="summary-container mb-8 hidden">
-        <header class="mb-7 flex items-center gap-2">
-          <Sparkles class="h-6 w-6 text-white" />
-          <h2 id="summary-title" class="m-0!">Summary</h2>
-        </header>
-        <div
-          id="summary-content"
-          class="summary-content ai-neon-effect border-tertiary bg-background relative rounded-xl border p-8 transition-colors"
-        >
-          <!-- IA Resum injected -->
-          <div id="summary-skeleton-content" class="flex flex-col gap-4">
-            <div
-              class="bg-tertiary w-full max-w-[400px] animate-pulse rounded-md p-4"
-            >
-            </div>
-            <div class="bg-tertiary w-full animate-pulse rounded-md p-4"></div>
-            <div class="bg-tertiary w-full animate-pulse rounded-md p-4"></div>
-            <div class="bg-tertiary w-full animate-pulse rounded-md p-4"></div>
-          </div>
-        </div>
-      </div>
-    </summary-content-ai>
     <Content />
   </div>
   <footer class="text-secondary mt-8 rounded-md leading-relaxed text-balance">
@@ -144,130 +125,73 @@ const defaultCoverSize = {
   </footer>
 </PageWrapper>
 <script>
-  import { waitForAnimation } from "@src/utility/wait-for-animation";
+  const enhanceCodeBlocks = (root: ParentNode = document) => {
+    const inlineCodeOnlyParagraphs =
+      root.querySelectorAll<HTMLParagraphElement>("p > code:only-child");
 
-  class SummaryContentAI extends HTMLElement {
-    connectedCallback() {
-      let isSummaryRetry = false;
+    inlineCodeOnlyParagraphs.forEach(code => {
+      const text = code.textContent?.trim() ?? "";
+      const shouldPromoteToBlock = text.includes("\n") || text.length > 80;
 
-      const postBody = this.dataset.postBody;
-
-      const summaryButton = document.getElementById("summary-button");
-      const buttonText = document.getElementById("summary-button-text");
-      const summaryTitle = this.querySelector<HTMLElement>("#summary-title");
-      const summarySkeletonContent = this.querySelector<HTMLElement>(
-        "#summary-skeleton-content",
-      );
-      const summaryContainer =
-        this.querySelector<HTMLElement>("#summary-container");
-      const summaryContent =
-        this.querySelector<HTMLElement>("#summary-content");
-
-      if (
-        !summaryButton ||
-        !buttonText ||
-        !summarySkeletonContent ||
-        !summaryTitle ||
-        !summaryContainer ||
-        !summaryContent
-      ) {
-        // eslint-disable-next-line no-console
-        return console.error("SummaryContentAI: Some elements are missing", {
-          summaryButton,
-          buttonText,
-          summarySkeletonContent,
-          summaryTitle,
-          summaryContainer,
-          summaryContent,
-        });
+      if (!shouldPromoteToBlock) {
+        return;
       }
 
-      const resetAnimations = () => {
-        summaryContainer.classList.remove(
-          "animate-enter-down",
-          "animate-exit-down",
-        );
-        summaryTitle.classList.remove(
-          "animate-enter-down",
-          "animate-exit-down",
-        );
-      };
+      const paragraph = code.parentElement;
 
-      const handleSummaryClick = async () => {
-        summaryButton.setAttribute("disabled", "true");
-        summaryTitle.textContent = "Generating summary...";
+      if (!paragraph) {
+        return;
+      }
 
-        try {
-          if (isSummaryRetry) {
-            summaryButton.classList.replace(
-              "border-red-800",
-              "border-slate-800",
-            );
-            summaryButton.classList.replace("text-red-500/50", "text-white");
-            summaryButton.classList.replace("bg-red-950/50", "bg-slate-900");
-          }
+      const pre = document.createElement("pre");
+      const nextCode = code.cloneNode(true);
 
-          resetAnimations();
+      pre.classList.add("astro-code");
+      pre.appendChild(nextCode);
+      paragraph.replaceWith(pre);
+    });
 
-          summaryContainer.classList.remove("hidden");
+    const codeBlocks = root.querySelectorAll<HTMLElement>("pre > code");
 
-          summaryContainer.offsetHeight;
+    codeBlocks.forEach(code => {
+      const pre = code.parentElement;
 
-          summaryContainer.classList.add("animate-enter-down");
-          summaryTitle.classList.add("animate-enter-down");
+      if (!(pre instanceof HTMLPreElement)) {
+        return;
+      }
 
-          await waitForAnimation(summaryContainer, "enter-down");
+      pre.classList.add("astro-code");
 
-          const response = await fetch("/api/summarize", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ content: postBody }),
-          });
+      const languageClass = Array.from(code.classList).find(cssClass =>
+        cssClass.startsWith("language-"),
+      );
 
-          if (!response.ok) {
-            const errorData = await response.json();
-            summaryButton.removeAttribute("disabled");
-            throw new Error(errorData.error);
-          }
+      if (languageClass && !pre.dataset.language) {
+        pre.dataset.language = languageClass.replace("language-", "");
+      }
 
-          summarySkeletonContent.classList.add("hidden");
+      const hasLineElements = code.querySelector(":scope > .line");
+      const hasChildMarkup = code.children.length > 0;
 
-          const data = await response.json();
-          summaryContent.innerHTML = data.summary;
+      if (hasLineElements || hasChildMarkup) {
+        return;
+      }
 
-          resetAnimations();
+      const rawContent = code.textContent ?? "";
+      const normalizedContent = rawContent.replace(/\n$/, "");
+      const lines =
+        normalizedContent.length > 0 ? normalizedContent.split("\n") : [""];
 
-          summaryTitle.textContent = "Your summary";
-          summaryTitle.offsetHeight;
-          summaryTitle.classList.add("animate-enter-down");
+      code.textContent = "";
 
-          await waitForAnimation(summaryTitle, "enter-down");
-          isSummaryRetry = false;
-        } catch (error) {
-          isSummaryRetry = true;
-          buttonText.textContent = "Try again";
+      lines.forEach(lineText => {
+        const line = document.createElement("span");
+        line.className = "line";
+        line.textContent = lineText.length > 0 ? lineText : " ";
+        code.append(line);
+      });
+    });
+  };
 
-          resetAnimations();
-
-          summaryContainer.offsetHeight;
-          summaryTitle.offsetHeight;
-
-          summaryContainer.classList.add("animate-exit-down");
-          summaryTitle.classList.add("animate-exit-down");
-
-          await waitForAnimation(summaryContainer, "exit-down");
-
-          summaryContainer.classList.add("hidden");
-          summaryButton.removeAttribute("disabled");
-          summaryButton.classList.replace("border-slate-800", "border-red-800");
-          summaryButton.classList.replace("text-white", "text-red-500/50");
-          summaryButton.classList.replace("bg-slate-900", "bg-red-950/50");
-        }
-      };
-
-      summaryButton.addEventListener("click", handleSummaryClick);
-    }
-  }
-
-  customElements.define("summary-content-ai", SummaryContentAI);
+  enhanceCodeBlocks(document.getElementById("content-wrapper") ?? document);
 </script>
