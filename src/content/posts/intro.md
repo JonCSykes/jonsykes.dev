@@ -20,11 +20,6 @@ I started back in 2007 as a .NET Developer writing internal tools like Master Da
 Extremely boring work, but it taught me a lot about software architectures and databases. I eventually moved on to a
 Silicon Valley based company, Fanatics and found my love of Go.
 
-> Thought Bubble
->
-> I'm not kidding about my love of Go, like, I’m a straight-up fan boy and I’m fully self-aware.
-> You’ve been warned.
-
 I’ve since left Fanatics and continued my career, but through my time at these companies I’ve learned a few key principles I try to live by today:
 
 - Never work for a company that doesn't center its business on the technology. Companies who view IT as a cost center are always going to think of technology as a burden to the business instead of a key driver of the business. These companies tend to struggle over time and have trouble growing. This varies by industry of course...
@@ -55,10 +50,6 @@ I’ll try and do a post at least once a month and keep everyone notified via X/
 
 ### :grimacing:
 
-> Thought Bubble
->
-> Ok... I guess there’s no better time than now to get you used to my random tangents.
-
 To understand my ever-evolving opinion of AI, you have to understand one of the key tenets I’m striving to fight against with this blog.
 
 ### The Dead Internet Theory
@@ -67,12 +58,10 @@ To understand my ever-evolving opinion of AI, you have to understand one of the 
 
 I’m not really saying anything here that most of you don't already know, but I think it's an important opener to understand why I've decided to create a blog in 2026.
 
-> Thought Bubble
->
-> I mean, if you think about it, this form of writing hasn't really changed much in over 3 decades.
-> It's basically a classy version of a Geocities web page from 1996. If you don't know what that is, it was a
-> thing that existed before MySpace, and if you don't know what that is... well, let's just say I've been around long
-> enough to have strong opinions about table-based layouts.
+I mean, if you think about it, this form of writing has really changed little in over 3 decades.
+It's basically a classy version of a Geocities web page from 1996. If you don't know what that is, it was a
+thing that existed before MySpace, and if you don't know what that is... well, let's just say I've been around long
+enough to have strong opinions about table-based layouts.
 
 I wanted to start writing things down in my own words and sharing them out to people, partly because I’m starting a new open source project, but also because I want to prove that there are still people out there writing new stuff, even if it’s becoming less true every day. Don't get me wrong, I’m a proponent of using AI as a tool. I truly believe it’s a technology that can help humans remove the noise and focus on solving difficult problems. In fact, I hope to share a lot of my AI knowledge and experience in this blog.
 
@@ -99,14 +88,12 @@ However, I think it’s important we create some boundaries. I’m not going to 
    - You use built-in trained voice models to generate audio. It’s also acceptable to train your own voice or the voice of an individual as long as it's consensual.
    - You’re enhancing your owned video recordings with special effects or in place of manual editing.
 
-> Thought Bubble
->
-> These are my rules, they’re incomplete, and I reserve the right to change these rules. I’m a human,
-> and I get things wrong. But for the most part I think these rules represent my current take.
->
-> I mean... if you ever see something like "I have decided to let AI control my life, raise my kids,
-> manage my bank accounts, and run my business", then you should probably make sure I am still alive and a
-> T-1000 unit hasn't completely taken over my life...
+ These are my rules, they’re incomplete, and I reserve the right to change these rules. I’m a human,
+ and I get things wrong. But for the most part I think these rules represent my current take.
+
+ I mean... if you ever see something like "I have decided to let AI control my life, raise my kids,
+ manage my bank accounts, and run my business", then you should probably make sure I am still alive and a
+ T-1000 unit hasn't completely taken over my life...
 
 ---
 
@@ -117,10 +104,8 @@ stolen intellectual property in the training of their models... It wouldn't have
 There isn’t a sentence you or I could have spoken or a switch we could have flipped to change their minds. The emergent
 technology wouldn’t exist without all the data they used to train it.
 
-> Thought Bubble
->
-> Also... If I had a time machine, I wouldn’t use it to go back to 2016 to try and talk Sammy into not pirating the
-> entire internet. There are so many more interesting times I’d go back to. I mean... Dinosaurs. Am I Right?
+Also... If I had a time machine, I wouldn’t use it to go back to 2016 to try and talk Sammy into not pirating the
+entire internet. There are so many more interesting times I’d go back to. I mean... Dinosaurs. Am I Right?
 
 Does it mean they shouldn't pay for it? Absolutely not, I hope to see more IP holders get payouts for unlicensed use.
 More importantly, we should introduce solid regulations and enforcements for data used to train large language models.
