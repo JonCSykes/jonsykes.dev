@@ -8,6 +8,7 @@ const posts = defineCollection({
   }),
   schema: z.object({
     title: z.string(),
+    author: z.string().default("Jon Sykes"),
     cover: z.string(),
     thumbnail: z.string().optional(),
     summary: z.string(),

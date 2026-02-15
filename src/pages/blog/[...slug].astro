@@ -26,6 +26,13 @@ type Props = CollectionEntry<"posts">;
 const post = Astro.props;
 
 const date = new Date(post.data.date);
+const formattedDate = new Intl.DateTimeFormat("en-US", {
+  month: "2-digit",
+  day: "2-digit",
+  year: "numeric",
+  timeZone: "UTC",
+}).format(date);
+const authorName = post.data.author || "Jon Sykes";
 const readingTimeInMinutes = readingTime(post.body || "");
 
 const { Content } = await render(post);
@@ -46,6 +53,15 @@ const defaultCoverSize = {
   opengraphImage={openGraphImage}
 >
   <header>
+    {
+      post.data.isDraft && (
+        <div class="mb-8 rounded-md border-2 border-amber-300/60 bg-amber-400/15 px-6 py-4 text-center">
+          <p class="text-2xl font-bold tracking-[0.3em] text-amber-100 uppercase">
+            Draft
+          </p>
+        </div>
+      )
+    }
     <div class="mb-8">
       <BackToPrev href="/blog"> all posts</BackToPrev>
     </div>
@@ -79,6 +95,10 @@ const defaultCoverSize = {
         }
       </div>
       <section class="flex flex-row gap-8 sm:flex-col">
+        <p class="flex flex-col">
+          <span class="text-secondary mb-1 block text-sm">written by</span>
+          <span class="text-primary text-base leading-tight">{authorName}</span>
+        </p>
         {
           date && (
             <p class="flex flex-col">
@@ -87,9 +107,9 @@ const defaultCoverSize = {
               </span>
               <time
                 class="text-primary text-base leading-tight"
-                datetime="2023-06-22T00:00:00.000Z"
+                datetime={date.toISOString()}
               >
-                {new Date(date).toLocaleDateString("pt-BR")}
+                {formattedDate}
               </time>
             </p>
           )
@@ -115,6 +135,58 @@ const defaultCoverSize = {
   <div id="content-wrapper" class="content">
     <Content />
   </div>
+  <dialog
+    id="content-image-modal"
+    class="content-image-modal"
+    aria-label="Expanded blog image"
+  >
+    <div class="content-image-modal-toolbar">
+      <p id="content-image-modal-zoom" class="content-image-modal-zoom">100%</p>
+      <div class="content-image-modal-actions">
+        <button
+          id="content-image-modal-zoom-out"
+          class="content-image-modal-action"
+          type="button"
+          aria-label="Zoom out"
+        >
+          -
+        </button>
+        <button
+          id="content-image-modal-zoom-in"
+          class="content-image-modal-action"
+          type="button"
+          aria-label="Zoom in"
+        >
+          +
+        </button>
+        <button
+          id="content-image-modal-reset"
+          class="content-image-modal-action"
+          type="button"
+          aria-label="Reset zoom"
+        >
+          Reset
+        </button>
+        <button
+          id="content-image-modal-close"
+          class="content-image-modal-action content-image-modal-close"
+          type="button"
+          aria-label="Close full-size image"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <div id="content-image-modal-viewport" class="content-image-modal-viewport">
+      <img
+        id="content-image-modal-image"
+        class="content-image-modal-image"
+        draggable="false"
+        alt=""
+      />
+    </div>
+    <p id="content-image-modal-caption" class="content-image-modal-caption"></p>
+  </dialog>
   <footer class="text-secondary mt-8 rounded-md leading-relaxed text-balance">
     <h5 class="mb-4 text-xl font-semibold text-white lg:text-3xl">
       You made it!
@@ -193,5 +265,312 @@ const defaultCoverSize = {
     });
   };
 
-  enhanceCodeBlocks(document.getElementById("content-wrapper") ?? document);
+  const enhanceContentImages = (
+    root: ParentNode = document,
+    modal: HTMLDialogElement,
+  ) => {
+    const modalViewport = document.getElementById(
+      "content-image-modal-viewport",
+    ) as HTMLDivElement | null;
+    const modalImage = document.getElementById(
+      "content-image-modal-image",
+    ) as HTMLImageElement | null;
+    const modalCaption = document.getElementById(
+      "content-image-modal-caption",
+    ) as HTMLParagraphElement | null;
+    const zoomLabel = document.getElementById(
+      "content-image-modal-zoom",
+    ) as HTMLParagraphElement | null;
+    const zoomInButton = document.getElementById(
+      "content-image-modal-zoom-in",
+    ) as HTMLButtonElement | null;
+    const zoomOutButton = document.getElementById(
+      "content-image-modal-zoom-out",
+    ) as HTMLButtonElement | null;
+    const zoomResetButton = document.getElementById(
+      "content-image-modal-reset",
+    ) as HTMLButtonElement | null;
+    const closeButton = document.getElementById(
+      "content-image-modal-close",
+    ) as HTMLButtonElement | null;
+
+    if (
+      !modalViewport ||
+      !modalImage ||
+      !modalCaption ||
+      !zoomLabel ||
+      !zoomInButton ||
+      !zoomOutButton ||
+      !zoomResetButton ||
+      !closeButton
+    ) {
+      return;
+    }
+
+    let previousOverflow = "";
+    let naturalWidth = 0;
+    let naturalHeight = 0;
+    let minScale = 1;
+    let maxScale = 4;
+    let currentScale = 1;
+    let panX = 0;
+    let panY = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragStartPanX = 0;
+    let dragStartPanY = 0;
+
+    const clamp = (value: number, minValue: number, maxValue: number) => {
+      return Math.min(maxValue, Math.max(minValue, value));
+    };
+
+    const getPanLimits = () => {
+      const viewportBounds = modalViewport.getBoundingClientRect();
+      const scaledWidth = naturalWidth * currentScale;
+      const scaledHeight = naturalHeight * currentScale;
+
+      return {
+        maxX: Math.max(0, (scaledWidth - viewportBounds.width) / 2),
+        maxY: Math.max(0, (scaledHeight - viewportBounds.height) / 2),
+      };
+    };
+
+    const renderImageState = () => {
+      if (!naturalWidth || !naturalHeight) {
+        return;
+      }
+
+      const { maxX, maxY } = getPanLimits();
+      panX = clamp(panX, -maxX, maxX);
+      panY = clamp(panY, -maxY, maxY);
+
+      modalImage.style.width = `${naturalWidth}px`;
+      modalImage.style.height = `${naturalHeight}px`;
+      modalImage.style.transform = `translate(calc(-50% + ${panX}px), calc(-50% + ${panY}px)) scale(${currentScale})`;
+      zoomLabel.textContent = `${Math.round(currentScale * 100)}%`;
+
+      const canPan = currentScale > minScale + 0.001;
+      modalViewport.classList.toggle("is-pannable", canPan);
+      modalViewport.classList.toggle("is-dragging", canPan && isDragging);
+      zoomOutButton.disabled = currentScale <= minScale + 0.001;
+      zoomInButton.disabled = currentScale >= maxScale - 0.001;
+    };
+
+    const setScale = (nextScale: number, options?: { resetPan?: boolean }) => {
+      const resetPan = options?.resetPan ?? false;
+      currentScale = clamp(nextScale, minScale, maxScale);
+
+      if (resetPan || currentScale <= minScale + 0.001) {
+        panX = 0;
+        panY = 0;
+      }
+
+      renderImageState();
+    };
+
+    const recalculateScaleBounds = (resetPan = false) => {
+      if (!naturalWidth || !naturalHeight) {
+        return;
+      }
+
+      const viewportBounds = modalViewport.getBoundingClientRect();
+
+      if (!viewportBounds.width || !viewportBounds.height) {
+        return;
+      }
+
+      minScale = Math.min(
+        1,
+        viewportBounds.width / naturalWidth,
+        viewportBounds.height / naturalHeight,
+      );
+      maxScale = Math.max(4, minScale * 8, 1);
+
+      setScale(currentScale, { resetPan });
+    };
+
+    const closeModal = () => {
+      if (modal.open) {
+        modal.close();
+      }
+    };
+
+    const openModal = async (image: HTMLImageElement) => {
+      const authoredSource = image.getAttribute("src");
+      const imageSource = authoredSource
+        ? new URL(authoredSource, window.location.href).toString()
+        : image.currentSrc || image.src;
+
+      if (!imageSource) {
+        return;
+      }
+
+      modalImage.src = "";
+      modalImage.src = imageSource;
+      modalImage.alt = image.alt || "Expanded blog image";
+      modalCaption.textContent = image.alt || "";
+      previousOverflow = document.documentElement.style.overflow;
+      document.documentElement.style.overflow = "hidden";
+
+      modal.showModal();
+
+      await modalImage.decode().catch(() => undefined);
+
+      naturalWidth = modalImage.naturalWidth || image.naturalWidth;
+      naturalHeight = modalImage.naturalHeight || image.naturalHeight;
+      currentScale = 1;
+      panX = 0;
+      panY = 0;
+      recalculateScaleBounds(true);
+      setScale(minScale, { resetPan: true });
+    };
+
+    zoomInButton.addEventListener("click", () => {
+      setScale(currentScale * 1.25);
+    });
+
+    zoomOutButton.addEventListener("click", () => {
+      setScale(currentScale / 1.25);
+    });
+
+    zoomResetButton.addEventListener("click", () => {
+      setScale(minScale, { resetPan: true });
+    });
+
+    closeButton.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", event => {
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+
+    modal.addEventListener("keydown", event => {
+      if (event.key === "+" || event.key === "=") {
+        event.preventDefault();
+        setScale(currentScale * 1.25);
+      }
+
+      if (event.key === "-") {
+        event.preventDefault();
+        setScale(currentScale / 1.25);
+      }
+
+      if (event.key === "0") {
+        event.preventDefault();
+        setScale(minScale, { resetPan: true });
+      }
+    });
+
+    modalViewport.addEventListener("pointerdown", event => {
+      if (event.button !== 0 || currentScale <= minScale + 0.001) {
+        return;
+      }
+
+      isDragging = true;
+      dragStartX = event.clientX;
+      dragStartY = event.clientY;
+      dragStartPanX = panX;
+      dragStartPanY = panY;
+      modalViewport.setPointerCapture(event.pointerId);
+      renderImageState();
+      event.preventDefault();
+    });
+
+    modalViewport.addEventListener("pointermove", event => {
+      if (!isDragging) {
+        return;
+      }
+
+      panX = dragStartPanX + (event.clientX - dragStartX);
+      panY = dragStartPanY + (event.clientY - dragStartY);
+      renderImageState();
+    });
+
+    const stopDrag = (event: PointerEvent) => {
+      if (!isDragging) {
+        return;
+      }
+
+      isDragging = false;
+
+      if (modalViewport.hasPointerCapture(event.pointerId)) {
+        modalViewport.releasePointerCapture(event.pointerId);
+      }
+
+      renderImageState();
+    };
+
+    modalViewport.addEventListener("pointerup", stopDrag);
+    modalViewport.addEventListener("pointercancel", stopDrag);
+
+    window.addEventListener("resize", () => {
+      if (!modal.open) {
+        return;
+      }
+
+      recalculateScaleBounds();
+    });
+
+    modal.addEventListener("close", () => {
+      modalImage.src = "";
+      modalImage.style.width = "";
+      modalImage.style.height = "";
+      modalImage.style.transform = "";
+      modalCaption.textContent = "";
+      zoomLabel.textContent = "100%";
+      naturalWidth = 0;
+      naturalHeight = 0;
+      minScale = 1;
+      maxScale = 4;
+      currentScale = 1;
+      panX = 0;
+      panY = 0;
+      isDragging = false;
+      modalViewport.classList.remove("is-pannable", "is-dragging");
+      zoomInButton.disabled = false;
+      zoomOutButton.disabled = false;
+      document.documentElement.style.overflow = previousOverflow;
+    });
+
+    const images = root.querySelectorAll<HTMLImageElement>("img");
+
+    images.forEach(image => {
+      if (!image.src || image.dataset.modalEnhanced === "true") {
+        return;
+      }
+
+      image.dataset.modalEnhanced = "true";
+      image.classList.add("content-image-clickable");
+      image.tabIndex = 0;
+      image.setAttribute("role", "button");
+      image.setAttribute("aria-haspopup", "dialog");
+      image.setAttribute("aria-label", image.alt || "Open full-size image");
+
+      image.addEventListener("click", () => {
+        openModal(image);
+      });
+
+      image.addEventListener("keydown", event => {
+        if (event.key !== "Enter" && event.key !== " ") {
+          return;
+        }
+
+        event.preventDefault();
+        openModal(image);
+      });
+    });
+  };
+
+  const contentWrapper = document.getElementById("content-wrapper");
+  const contentImageModal = document.getElementById(
+    "content-image-modal",
+  ) as HTMLDialogElement | null;
+
+  enhanceCodeBlocks(contentWrapper ?? document);
+
+  if (contentWrapper && contentImageModal) {
+    enhanceContentImages(contentWrapper, contentImageModal);
+  }
 </script>

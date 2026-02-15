@@ -1,5 +1,24 @@
 # Development Status
 
+## 2026-02-15
+
+- Filtered draft posts (`isDraft: true`) out of `/blog` and homepage latest-post listings by applying the shared content-collection draft exclusion pattern in `src/features/blog/components/content-list.astro` and `src/features/blog/components/latest-post.astro`, while keeping direct slug routes available.
+- Added a prominent conditional `DRAFT` badge at the top of individual blog posts in `src/pages/blog/[...slug].astro` when `post.data.isDraft` is true.
+- Added author metadata support to blog post frontmatter schema (`author`, default `Jon Sykes`) and rendered author in every post header in `src/pages/blog/[...slug].astro`.
+
+## 2026-02-14
+
+- Added global table styling in `src/styles/globals.css` with improved spacing, borders, readable header/body typography, zebra-striping for alternating rows, hover state, mobile horizontal scroll, and light-mode (`prefers-color-scheme`) color overrides.
+- Reduced global table vertical margins to exactly `10px` top and bottom in `src/styles/globals.css`.
+- Added clickable blog post content images that open a full-size modal with keyboard support, backdrop close, and caption support in `src/pages/blog/[...slug].astro` and `src/styles/content.css`.
+- Upgraded blog image modal to use native image sources with fit-to-viewport baseline zoom, explicit zoom in/out/reset controls, keyboard zoom shortcuts (`+`, `-`, `0`), and mouse drag panning when zoomed in.
+- Updated blog image modal layout to fill the full screen and use all remaining vertical space for the zoom/pan viewport.
+- Fixed fullscreen modal visibility regression by applying flex layout only when the dialog has `[open]`, restoring hidden-by-default behavior and functional Close actions.
+- Fixed initial modal zoom so images open at the computed fit scale (`minScale`) to fully fit within the modal viewport.
+- Updated blog post header publish date format to U.S. `MM/DD/YYYY` and fixed the `<time datetime>` value to use each post's actual ISO date.
+- Fixed blog list/home latest post date rendering to use a UTC-stable `D Mon YYYY` formatter so dates no longer shift by one day in U.S. time zones.
+- Added a `TL;DR` section near the top of `qwen3-coder-next-lms` with quick outcome/performance guidance for readers.
+
 ## 2026-02-12
 
 - Fixed favicon metadata links in `src/components/layouts/metadata.astro` to use the proper icon set (`favicon.ico`, `favicon.svg`, `favicon-96x96.png`, Apple touch icon, and manifest) instead of a mis-declared PNG link.

@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import ContentItem from "./content-item.astro";
 
-const posts = await getCollection("posts");
+const posts = (await getCollection("posts")).filter(post => !post.data.isDraft);
 const orderedByDate = posts.sort((a, b) => {
   return new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf();
 });
