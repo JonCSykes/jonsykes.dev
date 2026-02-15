@@ -5,6 +5,18 @@
     @apply rounded-md;
   }
 
+  img.content-image-clickable {
+    @apply cursor-zoom-in transition-opacity duration-200;
+
+    &:hover {
+      @apply opacity-90;
+    }
+
+    &:focus-visible {
+      @apply ring-secondary/80 rounded-md ring-2 ring-offset-2 ring-offset-slate-950 outline-none;
+    }
+  }
+
   .astro-code,
   .hljs {
     @apply bg-code/50!;
@@ -315,4 +327,68 @@
       }
     }
   }
+}
+
+.content-image-modal {
+  @apply fixed inset-0 m-0 max-h-none max-w-none border-0 bg-transparent p-4 md:p-6;
+  width: 100vw;
+  height: 100dvh;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &::backdrop {
+    @apply bg-slate-950/90 backdrop-blur-sm;
+  }
+}
+
+.content-image-modal[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.content-image-modal-toolbar {
+  @apply mb-3 flex flex-wrap items-center justify-between gap-3;
+}
+
+.content-image-modal-zoom {
+  @apply text-secondary text-sm font-medium;
+}
+
+.content-image-modal-actions {
+  @apply flex flex-wrap items-center justify-end gap-2;
+}
+
+.content-image-modal-action {
+  @apply bg-background/95 text-primary border-tertiary rounded-full border px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+
+  &:hover:not(:disabled) {
+    @apply bg-slate-800;
+  }
+}
+
+.content-image-modal-close {
+  @apply px-5;
+}
+
+.content-image-modal-viewport {
+  @apply relative min-h-0 w-full flex-1 overflow-hidden rounded-md border border-slate-800 bg-slate-950;
+  touch-action: none;
+}
+
+.content-image-modal-viewport.is-pannable {
+  @apply cursor-grab;
+}
+
+.content-image-modal-viewport.is-dragging {
+  @apply cursor-grabbing;
+}
+
+.content-image-modal-image {
+  @apply pointer-events-none absolute top-1/2 left-1/2 max-w-none rounded-md select-none;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.content-image-modal-caption {
+  @apply text-secondary mx-auto mt-3 max-w-[95%] text-center text-sm leading-relaxed;
 }

@@ -3,6 +3,28 @@
 @import "./brand.css";
 @import "./animations.css";
 
+:root {
+  --table-border-color: rgb(51 65 85 / 0.8);
+  --table-divider-color: rgb(51 65 85 / 0.7);
+  --table-surface-bg: rgb(15 23 42 / 0.45);
+  --table-header-bg: rgb(15 23 42 / 0.85);
+  --table-row-odd-bg: rgb(2 6 23 / 0.3);
+  --table-row-even-bg: rgb(30 41 59 / 0.45);
+  --table-row-hover-bg: rgb(51 65 85 / 0.5);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --table-border-color: rgb(203 213 225 / 0.95);
+    --table-divider-color: rgb(203 213 225 / 0.95);
+    --table-surface-bg: rgb(255 255 255 / 0.98);
+    --table-header-bg: rgb(248 250 252 / 0.98);
+    --table-row-odd-bg: rgb(255 255 255 / 0.98);
+    --table-row-even-bg: rgb(248 250 252 / 0.98);
+    --table-row-hover-bg: rgb(241 245 249 / 0.98);
+  }
+}
+
 body {
   @apply text-accent font-sans text-base antialiased;
   @apply bg-background;
@@ -51,5 +73,55 @@ button {
 a {
   &:disabled {
     @apply cursor-not-allowed opacity-50;
+  }
+}
+
+table {
+  @apply w-full overflow-hidden rounded-xl border text-left text-sm;
+  margin-block: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-color: var(--table-border-color);
+  background-color: var(--table-surface-bg);
+}
+
+thead {
+  background-color: var(--table-header-bg);
+}
+
+th,
+td {
+  @apply px-4 py-3 align-top;
+  border-bottom: 1px solid var(--table-divider-color);
+}
+
+th {
+  @apply text-primary text-xs font-semibold tracking-[0.08em] uppercase;
+}
+
+td {
+  @apply text-secondary leading-7;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: var(--table-row-odd-bg);
+}
+
+tbody tr:nth-child(even) {
+  background-color: var(--table-row-even-bg);
+}
+
+tbody tr:hover {
+  background-color: var(--table-row-hover-bg);
+  transition: background-color 180ms ease;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  table {
+    @apply block overflow-x-auto whitespace-nowrap;
   }
 }
