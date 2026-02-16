@@ -37,7 +37,7 @@ const readingTimeInMinutes = readingTime(post.body || "");
 
 const { Content } = await render(post);
 
-const openGraphImage = `images/posts/${post.id}/cover.jpg`;
+const openGraphImage = post.data.thumbnail || post.data.cover;
 
 const coverURL = post.data.cover;
 
