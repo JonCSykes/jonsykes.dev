@@ -1,5 +1,12 @@
 # Development Status
 
+## 2026-02-16
+
+- Updated `src/content/posts/qwen3-coder-next-lms.md` to clarify that elevated prompt-processing overhead may be partly driven by an LM Studio/MLX cache-efficiency bug, and added direct references to the related issue threads (`lmstudio-ai/lmstudio-bug-tracker#1319`, `ml-explore/mlx-lm#480`).
+- Updated `src/components/layouts/wrapper.astro` to use viewport-height minimum sizing (`min-h-screen`, `min-h-dvh`), made the page content region grow (`flex-1`) so the footer stays pinned to the bottom on short pages, and expanded the decorative blur layer to span the wrapper height.
+- Refined the wrapper decorative blur in `src/components/layouts/wrapper.astro` to be subtler and top-anchored (reduced opacity/blur strength, fixed top region height) instead of spanning the full wrapper.
+- Adjusted the wrapper blur again in `src/components/layouts/wrapper.astro` to keep the subtle look while extending through the full wrapper height, removing the visible unblurred band above the footer on shorter pages like `/blog` and `/projects`.
+
 ## 2026-02-15
 
 - Filtered draft posts (`isDraft: true`) out of `/blog` and homepage latest-post listings by applying the shared content-collection draft exclusion pattern in `src/features/blog/components/content-list.astro` and `src/features/blog/components/latest-post.astro`, while keeping direct slug routes available.
