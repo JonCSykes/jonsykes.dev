@@ -1,5 +1,9 @@
 # Development Status
 
+## 2026-02-16
+
+- Updated `src/content/posts/qwen3-coder-next-lms.md` to clarify that elevated prompt-processing overhead may be partly driven by an LM Studio/MLX cache-efficiency bug, and added direct references to the related issue threads (`lmstudio-ai/lmstudio-bug-tracker#1319`, `ml-explore/mlx-lm#480`).
+
 ## 2026-02-15
 
 - Filtered draft posts (`isDraft: true`) out of `/blog` and homepage latest-post listings by applying the shared content-collection draft exclusion pattern in `src/features/blog/components/content-list.astro` and `src/features/blog/components/latest-post.astro`, while keeping direct slug routes available.

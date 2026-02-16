@@ -88,12 +88,12 @@ However, I think it’s important we create some boundaries. I’m not going to 
    - You use built-in trained voice models to generate audio. It’s also acceptable to train your own voice or the voice of an individual as long as it's consensual.
    - You’re enhancing your owned video recordings with special effects or in place of manual editing.
 
- These are my rules, they’re incomplete, and I reserve the right to change these rules. I’m a human,
- and I get things wrong. But for the most part I think these rules represent my current take.
+These are my rules, they’re incomplete, and I reserve the right to change these rules. I’m a human,
+and I get things wrong. But for the most part I think these rules represent my current take.
 
- I mean... if you ever see something like "I have decided to let AI control my life, raise my kids,
- manage my bank accounts, and run my business", then you should probably make sure I am still alive and a
- T-1000 unit hasn't completely taken over my life...
+I mean... if you ever see something like "I have decided to let AI control my life, raise my kids,
+manage my bank accounts, and run my business", then you should probably make sure I am still alive and a
+T-1000 unit hasn't completely taken over my life...
 
 ---
 

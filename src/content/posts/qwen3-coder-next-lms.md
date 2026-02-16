@@ -5,7 +5,7 @@ thumbnail: "/images/posts/qwen3-coder-next-lms/thumb.png"
 summary: "A local-first build of a LM Studio Log Auditor, built end-to-end with Qwen 3 Coder Next + Opencode CLI for local model evaluations."
 aiUsage: "AI was used for editing and metric aggregation; All writing is my own and benchmark data and conclusions are based on local log analysis."
 date: "2026-02-16"
-isDraft: true
+isDraft: false
 ---
 
 ## TL;DR
@@ -159,7 +159,11 @@ I am pretty sure what you guys really care about are the numbers, so here they a
 ### Token Metrics
 
 When we analyze the token metrics, we can see that this workload was context-heavy. Median input context was **108k tokens** with **P95 at 229k**.
-It was long-context, iterative, multi-file agent work. We could have benefited from prompt caching.
+It was long-context, iterative, multi-file agent work. At first glance, this looked like a case where prompt caching should have helped prompt processing.
+
+> **Update (2026-02-16):** Based on follow-up debugging, this appears to be at least partially caused by a cache-efficiency bug in the LM Studio/MLX path, not just workload shape. Tracking issues:
+> - [LM Studio issue #1319](https://github.com/lmstudio-ai/lmstudio-bug-tracker/issues/1319)
+> - [MLX issue #480](https://github.com/ml-explore/mlx-lm/issues/480)
 
 <div class="grid grid-cols-1 gap-4 md:grid-cols-3 sm:grid-cols-1 [&>table]:my-0 [&>table]:text-xs">
 
@@ -193,8 +197,9 @@ especially considering how quickly our context window grew. This was the most ex
 Mac Studio I bought a year ago. :smile:
 
 Prompt processing is where most of our overhead lives. Prompt processing consumed **~440 minutes** versus **~185 minutes** of response time.
-In other words, context ingestion is the bigger tax over output streaming. Because we didn't have a viable prompt caching mechanism,
-our prompt processing time suffered the deeper we got into our context window.
+In other words, context ingestion is the bigger tax over output streaming. I initially attributed that mostly to missing prompt caching,
+but the current evidence suggests cache efficiency is likely degraded by the LM Studio/MLX bug noted above.
+Treat these prompt processing numbers as a worst-case read for this stack until those issues are resolved.
 
 <div class="grid grid-cols-1 gap-4 md:grid-cols-3 sm:grid-cols-1 [&>table]:my-0 [&>table]:text-xs">
 
