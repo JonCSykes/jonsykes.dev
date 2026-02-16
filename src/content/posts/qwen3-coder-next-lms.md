@@ -162,6 +162,7 @@ When we analyze the token metrics, we can see that this workload was context-hea
 It was long-context, iterative, multi-file agent work. At first glance, this looked like a case where prompt caching should have helped prompt processing.
 
 > **Update (2026-02-16):** Based on follow-up debugging, this appears to be at least partially caused by a cache-efficiency bug in the LM Studio/MLX path, not just workload shape. Tracking issues:
+>
 > - [LM Studio issue #1319](https://github.com/lmstudio-ai/lmstudio-bug-tracker/issues/1319)
 > - [MLX issue #480](https://github.com/ml-explore/mlx-lm/issues/480)
 
