@@ -132,7 +132,12 @@ const defaultCoverSize = {
       <ShareBar URLText={post.data.title} />
     </div>
   </header>
-  <div id="content-wrapper" class="content">
+  <div
+    id="content-wrapper"
+    class="content"
+    data-post-slug={post.id}
+    data-post-title={post.data.title}
+  >
     <Content />
   </div>
   <dialog
@@ -196,6 +201,7 @@ const defaultCoverSize = {
     </p>
   </footer>
 </PageWrapper>
+
 <script>
   const enhanceCodeBlocks = (root: ParentNode = document) => {
     const inlineCodeOnlyParagraphs =
@@ -563,10 +569,93 @@ const defaultCoverSize = {
     });
   };
 
+  const trackBlogScrollDepth = (root: HTMLElement) => {
+    if (root.dataset.scrollDepthTracked === "true") {
+      return;
+    }
+
+    root.dataset.scrollDepthTracked = "true";
+
+    const postSlug = root.dataset.postSlug ?? "";
+    const postTitle = root.dataset.postTitle ?? "";
+    const thresholds = [25, 50, 75, 90, 100];
+    const emittedThresholds = new Set<number>();
+
+    const getScrollDepthPercent = () => {
+      const scrollTop =
+        window.scrollY || document.documentElement.scrollTop || 0;
+      const scrollableHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+      if (scrollableHeight <= 0) {
+        return 100;
+      }
+
+      return Math.min(100, Math.round((scrollTop / scrollableHeight) * 100));
+    };
+
+    const captureThreshold = (
+      threshold: number,
+      currentDepthPercent: number,
+    ) => {
+      const posthog = (
+        window as {
+          posthog?: {
+            capture?: (
+              eventName: string,
+              properties?: Record<string, unknown>,
+            ) => void;
+          };
+        }
+      ).posthog;
+
+      if (!posthog?.capture) {
+        return;
+      }
+
+      posthog.capture("blog_scroll_depth", {
+        post_slug: postSlug,
+        post_title: postTitle,
+        scroll_depth_percent: threshold,
+        current_scroll_depth_percent: currentDepthPercent,
+        current_url: window.location.href,
+      });
+    };
+
+    const emitReachedThresholds = () => {
+      const currentDepthPercent = getScrollDepthPercent();
+
+      thresholds.forEach(threshold => {
+        if (
+          currentDepthPercent >= threshold &&
+          !emittedThresholds.has(threshold)
+        ) {
+          emittedThresholds.add(threshold);
+          captureThreshold(threshold, currentDepthPercent);
+        }
+      });
+    };
+
+    window.addEventListener("scroll", emitReachedThresholds, { passive: true });
+    window.addEventListener("resize", emitReachedThresholds, { passive: true });
+    window.addEventListener("pagehide", emitReachedThresholds);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        emitReachedThresholds();
+      }
+    });
+
+    emitReachedThresholds();
+  };
+
   const contentWrapper = document.getElementById("content-wrapper");
   const contentImageModal = document.getElementById(
     "content-image-modal",
   ) as HTMLDialogElement | null;
+
+  if (contentWrapper instanceof HTMLElement) {
+    trackBlogScrollDepth(contentWrapper);
+  }
 
   enhanceCodeBlocks(contentWrapper ?? document);
 

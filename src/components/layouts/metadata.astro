@@ -2,6 +2,7 @@
 import "@src/styles/globals.css";
 
 import { PAGE_INFO } from "@src/constants/page-info";
+import PostHog from "@src/components/posthog.astro";
 
 type Props = {
   title?: string;
@@ -60,4 +61,6 @@ const metadataImage = new URL(opengraphImage, Astro.site ?? Astro.url).href;
   <meta name="twitter:description" content={metadataDescription} />
   <meta name="twitter:image" content={metadataImage} />
   <meta name="twitter:image:alt" content={`${metadataTitle} preview image`} />
+
+  <PostHog />
 </head>
