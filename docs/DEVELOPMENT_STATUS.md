@@ -1,5 +1,11 @@
 # Development Status
 
+## 2026-02-17
+
+- Fixed page rendering regression caused by the PostHog rollout: removed the temporary `PostHogLayout` page wrapper usage that dropped page content, and injected PostHog globally through the existing document head in `src/components/layouts/metadata.astro` via `src/components/posthog.astro`.
+- Updated PostHog browser init in `src/components/posthog.astro` to explicitly enable page navigation tracking (`capture_pageview: "history_change"`) and `$pageleave` emission (`capture_pageleave: "if_capture_pageview"`), and added blog-post-only scroll depth tracking in `src/pages/blog/[...slug].astro` with threshold events at 25/50/75/90/100%.
+- Removed hardcoded PostHog credentials from source by switching `src/components/posthog.astro` to read `PUBLIC_POSTHOG_KEY` (and optional `PUBLIC_POSTHOG_HOST`) from environment variables; updated `.env.example` with the new analytics variables.
+
 ## 2026-02-16
 
 - Fixed social preview metadata in `src/components/layouts/metadata.astro` by switching OG/Twitter title/description tags to use fallback-safe values, normalizing URLs to canonical absolute URLs, and pointing the default social image to an existing asset (`/web-app-manifest-512x512.png`).
