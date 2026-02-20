@@ -1,5 +1,9 @@
 # Development Status
 
+## 2026-02-20
+
+- Fixed mobile horizontal overflow in `src/components/layouts/wrapper.astro` by clipping page-level horizontal overflow (`overflow-x-hidden` on `html` and `body`) and changing the decorative rotated blur from full-height geometry to a fixed-height/max-width shape, preventing the background effect from inflating document width.
+
 ## 2026-02-17
 
 - Fixed page rendering regression caused by the PostHog rollout: removed the temporary `PostHogLayout` page wrapper usage that dropped page content, and injected PostHog globally through the existing document head in `src/components/layouts/metadata.astro` via `src/components/posthog.astro`.
