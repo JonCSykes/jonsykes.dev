@@ -3,7 +3,7 @@ title: "How Junior Engineers Stand Out When Everyone Has AI"
 author: "Jon Sykes"
 cover: "/web-app-manifest-512x512.png"
 thumbnail: "/web-app-manifest-512x512.png"
-summary: "A hiring-manager roadmap for new grads and junior engineers on what to learn when AI makes code generation cheap and engineering judgment more valuable."
+summary: "A roadmap for new grads and junior engineers on what to learn when AI to make you standout in the crowd."
 aiUsage: "AI was used to help structure and edit this article. All opinions, anecdotes, and advice are based on my experience hiring and leading architecture-heavy engineering teams."
 date: "2026-03-12"
 isDraft: true
