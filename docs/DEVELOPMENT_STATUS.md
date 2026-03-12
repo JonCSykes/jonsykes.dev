@@ -1,5 +1,10 @@
 # Development Status
 
+## 2026-03-12
+
+- Added a new blog post design doc and implementation plan under `docs/plans/` for "How Junior Engineers Stand Out When Everyone Has AI", covering the hiring-manager angle, roadmap structure, section goals, and validation plan.
+- Drafted `src/content/posts/junior-engineers-ai.md` as a new blog post in draft mode, with a `TL;DR`, four roadmap sections, and AI-workflow examples for architecture, distributed systems, software delivery, and communication/judgment.
+
 ## 2026-02-20
 
 - Fixed mobile horizontal overflow in `src/components/layouts/wrapper.astro` by clipping page-level horizontal overflow (`overflow-x-hidden` on `html` and `body`) and changing the decorative rotated blur from full-height geometry to a fixed-height shape with a viewport-based cap (`max-w-[100vw]`), preventing the background effect from inflating document width.
