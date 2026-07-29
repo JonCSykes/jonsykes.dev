@@ -1,9 +1,9 @@
 ---
 title: "How Junior Engineers Stand Out When Everyone Has AI"
 author: "Jon Sykes"
-cover: "/web-app-manifest-512x512.png"
-thumbnail: "/web-app-manifest-512x512.png"
-summary: "A roadmap for new grads and junior engineers on what to learn when AI to make you standout in the crowd."
+cover: "/images/posts/junior-engineers-ai/cover.jpg"
+thumbnail: "/images/posts/junior-engineers-ai/thumb.jpg"
+summary: "A roadmap for new grads and junior engineers: what to learn so you stand out when everyone has AI."
 aiUsage: "AI was used to help structure and edit this article. All opinions, anecdotes, and advice are based on my experience hiring and leading architecture-heavy engineering teams."
 date: "2026-03-12"
 isDraft: true
@@ -86,9 +86,7 @@ If your entire AI workflow is "build this feature," you are using the tool at th
 
 I notice this immediately. The people I remember are rarely the ones who sound the flashiest in technical conversation. They are the ones who make me think, "Okay, this person understands how work gets shipped safely."
 
-If you want to sharpen this part of your game, ask a few simple questions on every task. How will I know this works? What could this break? How would I roll this out safely? What would I want to monitor after release?
-
-That mindset will separate you from a lot of people very quickly.
+Four questions on every task will get you most of the way. How will I know this works? What could this break? How would I roll this out safely? What would I want to monitor after release? Ask those consistently and you will be doing something most people at your level skip.
 
 ## Communication and judgment
 
@@ -106,7 +104,7 @@ AI is useful here if you use it the right way. It can help you compare options, 
 
 I want the second one. Every time.
 
-If you want to build this skill, write more. Explain your decisions in PRs. Summarize trade-offs. When you ask for help, ask narrower questions. When you disagree, explain why. When you're unsure, say so clearly. That isn't weakness. It's a sign that people can trust your thinking.
+Writing is how you build it. Explain your decisions in PRs and summarize trade-offs. When you ask for help, ask narrower questions. When you disagree, explain why. When you're unsure, say so clearly. That isn't weakness. It's a sign that people can trust your thinking.
 
 ## What I would focus on if I were starting now
 

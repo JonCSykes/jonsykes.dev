@@ -1,6 +1,6 @@
 ---
 title: "Does Qwen 3 Coder Next Make Local Development Viable?"
-cover: "/images/posts/qwen3-coder-next-lms/cover.png"
+cover: "/images/posts/qwen3-coder-next-lms/cover-v2.jpg"
 thumbnail: "/images/posts/qwen3-coder-next-lms/thumb.png"
 summary: "A local-first build of a LM Studio Log Auditor, built end-to-end with Qwen 3 Coder Next + Opencode CLI for local model evaluations."
 aiUsage: "AI was used for editing and metric aggregation; All writing is my own and benchmark data and conclusions are based on local log analysis."
