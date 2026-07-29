@@ -1,5 +1,26 @@
 # Development Status
 
+## 2026-07-29
+
+- Refreshed the intro and Qwen 3 Coder Next cover illustrations so Jon's
+  caricature matches his current appearance while retaining the established
+  blueprint artwork style.
+- Added an optimized, versioned Qwen cover and updated the post frontmatter to
+  use it; the existing square thumbnail remains unchanged.
+- Added blueprint-style cover and thumbnail artwork for both current draft
+  posts and replaced their temporary manifest-icon placeholders.
+- Simplified the junior-engineer cover by removing the robot and background
+  clutter, giving the student a book, and cleaning up the table diagram.
+- Refined the Creating Factories cover with a forward-looking Jon, a central
+  robot-status screen, and a cleaner floor without the gopher or grass marks.
+- Published "Creating Factories" with its supporting factory-path diagram,
+  production cover, and square thumbnail.
+
+## 2026-03-12
+
+- Added a new blog post design doc and implementation plan under `docs/plans/` for "How Junior Engineers Stand Out When Everyone Has AI", covering the hiring-manager angle, roadmap structure, section goals, and validation plan.
+- Drafted `src/content/posts/junior-engineers-ai.md` as a new blog post in draft mode, with a `TL;DR`, four roadmap sections, and AI-workflow examples for architecture, distributed systems, software delivery, and communication/judgment.
+
 ## 2026-02-20
 
 - Fixed mobile horizontal overflow in `src/components/layouts/wrapper.astro` by clipping page-level horizontal overflow (`overflow-x-hidden` on `html` and `body`) and changing the decorative rotated blur from full-height geometry to a fixed-height shape with a viewport-based cap (`max-w-[100vw]`), preventing the background effect from inflating document width.
